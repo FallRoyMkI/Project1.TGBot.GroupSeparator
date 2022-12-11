@@ -1,11 +1,12 @@
 ﻿namespace SeparatorIntoGroup;
+using System.Text.Json;
+
 
 public class ProjectCore
 {
         public List<Student> Students { get; set; }
         public List<Group> Groups { get; set; }
         public List<Teacher> Teachers { get; set; }
-        public List<Team> Teams { get; set; }
         public string Path { get; set; }
 
         public ProjectCore() 
