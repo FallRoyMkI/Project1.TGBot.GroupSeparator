@@ -19,12 +19,14 @@ public class Team
     {
         StudentsInTeam.Add(student);
         student.Status = StatusType.InTeam;
+        student.Team = this;
     }
 
     public void RemoveStudentFromTeam(Student student)
     {
         StudentsInTeam.Remove(student);
         student.Status = StatusType.PassedSurvey;
+        student.Team = null;
     }
 
     public void RemoveAllStudentsFromTeam()
@@ -32,7 +34,19 @@ public class Team
         foreach (var student in StudentsInTeam)
         {
             student.Status = StatusType.PassedSurvey;
+            student.Team = null;
         }
         StudentsInTeam.Clear();
+    }
+
+    public void  WriteInfoTeam()
+    {
+        Console.WriteLine($"Id: {Id}");
+        Console.WriteLine($"Name: {TeamName}");
+        Console.Write("Members:");
+        foreach (var student in StudentsInTeam)
+        {
+            Console.WriteLine($" {student.Id} {student.PersonName}");
+        }
     }
 }

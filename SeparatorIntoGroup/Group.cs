@@ -21,36 +21,51 @@ public class Group
     {
         StudentsInGroup.Add(student);
         student.Status = StatusType.InGroup;
+        student.Group = this;
     }
 
     public void RemoveStudentFromGroup(Student student)
     {
         StudentsInGroup.Remove(student);
         student.Status = StatusType.NotInGroup;
+        student.Group = null;
     }
 
-    public void RemoveAllStudentsFromGroup()
+    public void DeleteGroup()
+    {
+        RemoveAllTeamsFromGroup();
+        RemoveAllStudentsFromGroup();
+    }
+    private void RemoveAllStudentsFromGroup()
     {
         foreach (var student in StudentsInGroup)
         {
             student.Status = StatusType.NotInGroup;
+            student.Group = null;
         }
+
         StudentsInGroup.Clear();
     }
-
-    public void AddTeamToGroup(Team team)
+    private void RemoveAllTeamsFromGroup()
     {
+        foreach (var team in TeamsInGroup)
+        {
+            team.RemoveAllStudentsFromTeam();
+        }
+
+        TeamsInGroup.Clear();
+    }
+
+    public void CreateTeamToGroup(int id, string teamName)
+    {
+        Team team = new Team(id, teamName);
         TeamsInGroup.Add(team);
     }
 
     public void RemoveTeamFromGroup(Team team)
     {
+        team.RemoveAllStudentsFromTeam();
         TeamsInGroup.Remove(team);
-    }
-
-    public void RemoveAllTeamsFromGroup()
-    {
-        TeamsInGroup.Clear();
     }
 
     public void AddStudentToTeam(Team team, Student student)
@@ -62,7 +77,8 @@ public class Group
     {
         team.RemoveStudentFromTeam(student);
     }
-    public void WriteinfoGroup()
+
+    public void WriteInfoGroup()
     {
         Console.WriteLine($"Name: {GroupName}");
         Console.WriteLine($"Count: {StudentsInGroup.Count}");

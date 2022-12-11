@@ -7,7 +7,17 @@ Student student3 = new Student(4444, "Alex", "@Alex");
 
 Group testGroup = new Group(1, "TestGroup");
 
+
+Team testTeam = new Team(2, "TestTeam");
+
+testTeam.AddStudentToTeam(student3);
+testTeam.AddStudentToTeam(student3);
+testTeam.AddStudentToTeam(student3);
+
+testTeam.WriteInfoTeam();
+
 testGroup.AddStudentToGroup(student1);
 testGroup.AddStudentToGroup(student2);
 
-testGroup.WriteinfoGroup();
+//testGroup.WriteInfoGroup();
+

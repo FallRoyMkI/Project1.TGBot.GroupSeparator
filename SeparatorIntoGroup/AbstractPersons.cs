@@ -9,7 +9,7 @@ public class AbstractPersons
     public string AccountName { get; protected set; }
     public StatusType Status { get; set; }
 
-    public virtual void Writeinfo()
+    public virtual void WriteInfo()
     {
         Console.WriteLine($"{Id}");
         Console.WriteLine($"{PersonName}");
