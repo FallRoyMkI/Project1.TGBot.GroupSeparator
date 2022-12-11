@@ -62,4 +62,9 @@ public class Group
     {
         team.RemoveStudentFromTeam(student);
     }
+    public void WriteinfoGroup()
+    {
+        Console.WriteLine($"Name: {GroupName}");
+        Console.WriteLine($"Count: {StudentsInGroup.Count}");
+    }
 }

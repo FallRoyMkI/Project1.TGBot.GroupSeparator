@@ -1,5 +1,13 @@
 ﻿using SeparatorIntoGroup;
 
-Teacher a = new Teacher(1, "AAA", "dfd");
+Teacher teacher1 = new Teacher(1111, "Maxim", "@Maxim");
+Student student1 = new Student(2222, "Tom", "@Tom");
+Student student2 = new Student(3333, "Bob", "@Bob");
+Student student3 = new Student(4444, "Alex", "@Alex");
 
-a.Writeinfo();
+Group testGroup = new Group(1, "TestGroup");
+
+testGroup.AddStudentToGroup(student1);
+testGroup.AddStudentToGroup(student2);
+
+testGroup.WriteinfoGroup();
