@@ -14,7 +14,7 @@ public class Teacher : AbstractPersons
         Status = StatusType.IsTeacher;
     }
 
-    public void AddStudent(Student student)
+        public void AddStudent(Student student)
         {
             _storage.Students.Add(student);
             _storage.SaveAll();
