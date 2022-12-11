@@ -1,4 +1,6 @@
-﻿namespace SeparatorIntoGroup;
+﻿using SeparatorIntoGroup.Options;
+
+namespace SeparatorIntoGroup;
 
 public class Team
 {
@@ -13,18 +15,24 @@ public class Team
         StudentsInTeam = new List<Student>();
     }
 
-    public void AddStudentToTeamList(Student student)
+    public void AddStudentToTeam(Student student)
     {
         StudentsInTeam.Add(student);
+        student.Status = StatusType.InTeam;
     }
 
-    public void RemoveStudentFromTeamList(Student student)
+    public void RemoveStudentFromTeam(Student student)
     {
         StudentsInTeam.Remove(student);
+        student.Status = StatusType.PassedSurvey;
     }
 
-    public void RemoveAllStudentsFromTeamList()
+    public void RemoveAllStudentsFromTeam()
     {
+        foreach (var student in StudentsInTeam)
+        {
+            student.Status = StatusType.PassedSurvey;
+        }
         StudentsInTeam.Clear();
     }
 }
