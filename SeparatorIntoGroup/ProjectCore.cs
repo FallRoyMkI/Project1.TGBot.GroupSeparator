@@ -14,7 +14,6 @@ public class ProjectCore
             Students = new List<Student>();
             Groups = new List<Group>();
             Teachers = new List<Teacher>();
-            Teams = new List<Team>();
             Path = "../Storage.txt";
         }
 
@@ -27,8 +26,6 @@ public class ProjectCore
                 jsn = JsonSerializer.Serialize(Groups);
                 sw.WriteLine(jsn);
                 jsn = JsonSerializer.Serialize(Teachers);
-                sw.WriteLine(jsn);
-                jsn = JsonSerializer.Serialize(Teams);
                 sw.WriteLine(jsn);
             }
         }
