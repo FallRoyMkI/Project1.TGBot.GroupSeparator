@@ -1,4 +1,6 @@
-﻿using SeparatorIntoGroup.Options;
+﻿using System.ComponentModel.DataAnnotations;
+using SeparatorIntoGroup.Options;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SeparatorIntoGroup;
 
@@ -82,5 +84,30 @@ public class Group
     {
         Console.WriteLine($"Name: {GroupName}");
         Console.WriteLine($"Count: {StudentsInGroup.Count}");
+    }
+
+
+    private double TimeComparison(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
+    {
+        if (!(start1 > end2 || start2 > end1))
+        {
+            return 0;
+        }
+        if (start1 < start2)
+        {
+            if (end1 > start2 && end1 < end2)
+                return end1.Subtract(start2).TotalMinutes;
+            if (end1 > end2)
+                return end2.Subtract(start2).TotalMinutes;
+        }
+        else
+        {
+            if (end2 > start1 && end2 < end1)
+                return end2.Subtract(start1).TotalMinutes;
+
+            if (end2 > end1)
+                return end1.Subtract(start1).TotalMinutes;
+        }
+        return 0;
     }
 }
