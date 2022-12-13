@@ -36,10 +36,11 @@ public class Team
             student.Status = StatusType.PassedSurvey;
             student.Team = null;
         }
+
         StudentsInTeam.Clear();
     }
 
-    public void  WriteInfoTeam()
+    public void WriteInfoTeam()
     {
         Console.WriteLine($"Id: {Id}");
         Console.WriteLine($"Name: {TeamName}");

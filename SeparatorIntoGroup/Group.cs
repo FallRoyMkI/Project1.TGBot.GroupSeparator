@@ -25,19 +25,38 @@ public class Group
         student.Status = StatusType.InGroup;
         student.Group = this;
     }
-
     public void RemoveStudentFromGroup(Student student)
     {
         StudentsInGroup.Remove(student);
         student.Status = StatusType.NotInGroup;
         student.Group = null;
     }
-
-    public void DeleteGroup()
+    public void ClearGroup()
     {
         RemoveAllTeamsFromGroup();
         RemoveAllStudentsFromGroup();
     }
+
+    public void CreateNewTeamInGroup(int id, string teamName)
+    {
+        Team team = new Team(id, teamName);
+        TeamsInGroup.Add(team);
+    }
+    public void AddStudentToTeam(Team team, Student student)
+    {
+        team.AddStudentToTeam(student);
+    }
+    public void RemoveStudentFromTeam(Team team, Student student)
+    {
+        team.RemoveStudentFromTeam(student);
+    }
+    public void DeleteTeamFromGroup(Team team)
+    {
+        team.RemoveAllStudentsFromTeam();
+        TeamsInGroup.Remove(team);
+    }
+
+
     private void RemoveAllStudentsFromGroup()
     {
         foreach (var student in StudentsInGroup)
@@ -58,35 +77,12 @@ public class Group
         TeamsInGroup.Clear();
     }
 
-    public void CreateTeamToGroup(int id, string teamName)
-    {
-        Team team = new Team(id, teamName);
-        TeamsInGroup.Add(team);
-    }
-
-    public void RemoveTeamFromGroup(Team team)
-    {
-        team.RemoveAllStudentsFromTeam();
-        TeamsInGroup.Remove(team);
-    }
-
-    public void AddStudentToTeam(Team team, Student student)
-    {
-        team.AddStudentToTeam(student);
-    }
-
-    public void RemoveStudentFromTeam(Team team, Student student)
-    {
-        team.RemoveStudentFromTeam(student);
-    }
 
     public void WriteInfoGroup()
     {
         Console.WriteLine($"Name: {GroupName}");
         Console.WriteLine($"Count: {StudentsInGroup.Count}");
     }
-
-
     private double TimeComparison(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
     {
         if (!(start1 > end2 || start2 > end1))
