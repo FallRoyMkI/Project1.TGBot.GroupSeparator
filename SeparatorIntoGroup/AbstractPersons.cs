@@ -16,4 +16,10 @@ public class AbstractPersons
         Console.WriteLine($"{AccountName}");
         Console.WriteLine($"{Status}");
     }
+
+    //public override bool Equals(object? obj)
+    //{
+    //    return obj is AbstractPersons ap &&
+    //           Id == ap.Id;
+    //}
 }

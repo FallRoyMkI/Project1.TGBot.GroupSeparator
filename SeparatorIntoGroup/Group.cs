@@ -106,4 +106,10 @@ public class Group
         }
         return 0;
     }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Group group &&
+               Id == group.Id;
+    }
 }

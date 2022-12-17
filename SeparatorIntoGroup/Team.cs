@@ -50,4 +50,10 @@ public class Team
             Console.WriteLine($" {student.Id} {student.PersonName}");
         }
     }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Team team &&
+               Id == team.Id;
+    }
 }
