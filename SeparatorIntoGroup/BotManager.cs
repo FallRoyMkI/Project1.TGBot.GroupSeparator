@@ -1,17 +1,17 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Types;
-using Telegram.Bot.Exceptions;
+﻿using Telegram.Bot;
 using Telegram.Bot.Polling;
-using Microsoft.VisualBasic;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace SeparatorIntoGroup
 {
     public class BotManager
     {
         private static ITelegramBotClient _bot;
+        private const string Test1 = "Test1";
+        private const string Test2 = "Test2";
+        private const string Test3 = "Test3";
+        private const string Test4 = "Test4";
 
         public BotManager()
         {
@@ -59,7 +59,8 @@ namespace SeparatorIntoGroup
                 {
                     if (update.Message.Chat.Id == 522974861)
                     {
-                        _bot.SendTextMessageAsync(update.Message.Chat.Id, $"Привет {update.Message.Chat.FirstName}!");
+                        _bot.SendTextMessageAsync(update.Message.Chat.Id, $"Привет {update.Message.Chat.FirstName}!", replyMarkup: GetButtons());
+                        //_bot.SendTextMessageAsync(update.Message.Chat.Id, $"Потестим кнопки {update.Message.Chat.FirstName}!");
                     }
                     else
                     {
@@ -80,6 +81,16 @@ namespace SeparatorIntoGroup
         public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
 
+        }
+
+        private IReplyMarkup? GetButtons()
+        {
+            return new ReplyKeyboardMarkup(new List<List<KeyboardButton>>
+                {
+                    new List<KeyboardButton> { new KeyboardButton(Test1), new KeyboardButton(Test2) },
+                    new List<KeyboardButton> { new KeyboardButton(Test3), new KeyboardButton(Test4)}
+                }
+            );
         }
     }
 }
