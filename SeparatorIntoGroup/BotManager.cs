@@ -1,4 +1,6 @@
-﻿namespace SeparatorIntoGroup;
+﻿using SeparatorIntoGroup.Options;
+
+namespace SeparatorIntoGroup;
 
 public class BotManager
 {
@@ -7,7 +9,7 @@ public class BotManager
         Questionnaire question = new Questionnaire();
         question.QuestionAboutWishStudents(new List<Student>());
         question.QuestionAboutNotWishStudents(new List<Student>());
-        question.QuestionAboutTime("18:50", "2");
+        question.QuestionAboutFreeTime(TimeDictionaryKeys.Monday,new List<TimeDictionaryValues>());
         student.AnswersToQuestionnaire = question;   
     }
 }

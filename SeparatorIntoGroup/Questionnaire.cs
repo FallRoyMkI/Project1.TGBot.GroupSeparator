@@ -1,23 +1,34 @@
-﻿namespace SeparatorIntoGroup;
+﻿using SeparatorIntoGroup.Options;
+
+namespace SeparatorIntoGroup;
 
 public class Questionnaire
 {
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
+    public Dictionary<TimeDictionaryKeys, List<TimeDictionaryValues>> StudentFreeTime { get; set; }
     public List<Student> WishStudents { get; set; }
     public List<Student> NotWishStudents { get; set; }
+
     public Questionnaire()
     {
         WishStudents = new List<Student>();
         NotWishStudents = new List<Student>();
-    }
-    public void QuestionAboutTime(string startTime, string timeDuration)
-    {
-        StartTime = DateTime.Parse(startTime);
-        EndTime = StartTime.AddHours(Convert.ToInt32(timeDuration));
-        //Console.WriteLine($"{StartTime.ToShortTimeString()} - {EndTime.ToShortTimeString()}");
+        StudentFreeTime = new Dictionary<TimeDictionaryKeys, List<TimeDictionaryValues>>()
+        {
+            { TimeDictionaryKeys.Monday, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Tuesday, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Wednesday, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Thursday, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Friday, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Saturday, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Sunday, new List<TimeDictionaryValues>() }
+        };
     }
 
+
+    public void QuestionAboutFreeTime(TimeDictionaryKeys key, List<TimeDictionaryValues> values)
+    {
+        StudentFreeTime[key].AddRange(values);
+    }
     public void QuestionAboutWishStudents(List<Student> list)
     {
         WishStudents = list;

@@ -5,111 +5,167 @@ namespace SeparatorIntoGroup;
 public class TeamBuilder
 {
     public List<Student> StudentsForDistribution { get; set; }
-    private List<List<Student>> _teamList;
+    public List<List<Student>> TeamList { get; private set; }
     private int[] _numberOfMembersInTeam;
     private int[,] _connectionValueForStudents;
     private int[] _connectionValueForTeams;
     private List<int> _randomStudentIndexes;
+    private IEnumerable<TimeDictionaryKeys> _timeDictionaryKeys;
 
-    
     public TeamBuilder(Group group, int[] numberOfTeamMembers) // тут массив вида 3/3/3/3/2/2/5 по участникам команд
     {
         StudentsForDistribution = group.StudentsInGroup.FindAll(x => x.Status == StatusType.PassedSurvey);
         _numberOfMembersInTeam = numberOfTeamMembers;
         for (int i = 0; i < _numberOfMembersInTeam.Length; i++)
         {
-            _teamList.Add(new List<Student>());
+            TeamList.Add(new List<Student>());
         }
 
         _connectionValueForStudents = new int[StudentsForDistribution.Count, StudentsForDistribution.Count];
-        //CreateConnections();
-        _connectionValueForTeams = new int[_teamList.Count];
+        CreateConnections();
+        _connectionValueForTeams = new int[TeamList.Count];
 
         CreationRandomStudentsIndexes();
     }
-    //public void CreateConnections()
-    //{
-
-    //}
-    public void CreationRandomStudentsIndexes()
-    {
-        Random random = new Random();
-        for (int i = 0; i < StudentsForDistribution.Count; i++)
-        {
-            int k = random.Next(StudentsForDistribution.Count + 1);
-            while (_randomStudentIndexes[i] != k )
-            {
-                if (!_randomStudentIndexes.Contains(k))
-                {
-                    _randomStudentIndexes[i] = k;
-                }
-                else
-                {
-                    k = random.Next(StudentsForDistribution.Count + 1);
-                }
-            }
-        }
-    }
-
+   
+    
     public void TeamBuild()
     {
-        for (int i = 0; i < _teamList.Count; i++)
+        for (int i = 0; i < TeamList.Count; i++)
         {
-            _teamList[i].Add(StudentsForDistribution[_randomStudentIndexes[i]]);  //добавляем капитаноф!)
+            TeamList[i].Add(StudentsForDistribution[_randomStudentIndexes[i]]);  //добавляем капитаноф!)
         }
 
-        _randomStudentIndexes = _randomStudentIndexes.GetRange(_teamList.Count, _randomStudentIndexes.Count - _teamList.Count);
+        _randomStudentIndexes = _randomStudentIndexes.GetRange(TeamList.Count, _randomStudentIndexes.Count - TeamList.Count);
         foreach (var studentIndex in _randomStudentIndexes)
         {
             Student student;
-            foreach (var team in _teamList)
+            foreach (var team in TeamList)
             {
                 for (int i = 0; i < team.Count; i++)
                 {
                     student = team[i];
-                    _connectionValueForTeams[_teamList.FindIndex(x => x == team)] 
+                    _connectionValueForTeams[TeamList.FindIndex(x => x == team)] 
                         += _connectionValueForStudents[studentIndex, StudentsForDistribution.FindIndex(x => x == student)];
                 }
-                _teamList[GetIndexOfTeamForJoining(IndexMassiveCreation(_connectionValueForTeams))].Add(StudentsForDistribution[studentIndex]);
-                _connectionValueForTeams = new int[_teamList.Count];
+                TeamList[GetIndexOfTeamForJoining(IndexArrayCreation(_connectionValueForTeams))].Add(StudentsForDistribution[studentIndex]);
+                _connectionValueForTeams = new int[TeamList.Count];
             }
         }
     }
 
-    private int GetIndexOfTeamForJoining(int[] massive)
+
+    private void CreateConnections()
     {
-        for (int i = 0; i < massive.Length; i++)
+        int value;
+        for (int i=0; i< StudentsForDistribution.Count; i++)
         {
-            if (_teamList[i].Count < _numberOfMembersInTeam[i])
+            for (int j = 0; j < StudentsForDistribution.Count; j++)
+            {
+                value = 0;
+                if (j == i)
+                {
+                    _connectionValueForStudents[i, i] = -1000;
+                }
+                else
+                {
+                    value += WishListsComparison(StudentsForDistribution[i], StudentsForDistribution[j]);
+                    value += TimeComparison(StudentsForDistribution[i], StudentsForDistribution[j]);
+                
+                    _connectionValueForStudents[i, j] = value;
+                }
+            }
+        }
+    }
+    private void CreationRandomStudentsIndexes()
+    {
+        Random random = new Random();
+        for (int i = 0; i < StudentsForDistribution.Count; i++)
+        {
+            int randomIndex = random.Next(StudentsForDistribution.Count + 1);
+            while (_randomStudentIndexes[i] != randomIndex )
+            {
+                if (!_randomStudentIndexes.Contains(randomIndex))
+                {
+                    _randomStudentIndexes[i] = randomIndex;
+                }
+                else
+                {
+                    randomIndex = random.Next(StudentsForDistribution.Count + 1);
+                }
+            }
+        }
+    }
+
+    private int GetIndexOfTeamForJoining(int[] array)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (TeamList[i].Count < _numberOfMembersInTeam[i])
             {
                 return i;
             }
         }
         return -1;
     }
-
-    private int[] IndexMassiveCreation(int[] massive)
+    private int[] IndexArrayCreation(int[] array)
     {
-        int[] indexMassive = new int[massive.Length];
+        int[] indexArray = new int[array.Length];
 
-        for (int i = 0; i < massive.Length; i++)
+        for (int i = 0; i < array.Length; i++)
         {
-            int maxValue = massive[i];
+            int maxValue = array[i];
             int maxValueIndex = i;
-            for (int j = i; j < massive.Length; j++)
+            for (int j = i; j < array.Length; j++)
             {
-                if (massive[j] > maxValue)
+                if (array[j] > maxValue)
                 {
-                    maxValue = massive[j];
+                    maxValue = array[j];
                     maxValueIndex = j;
-                    int temp = massive[i];
-                    massive[i] = massive[j];
-                    massive[j]= temp;
+                    int temp = array[i];
+                    array[i] = array[j];
+                    array[j]= temp;
                 }
             }
-            indexMassive[i] = maxValueIndex;
+            indexArray[i] = maxValueIndex;
         }
 
-        return indexMassive;
+        return indexArray;
+    }
+
+    private int WishListsComparison(Student firstStudent, Student secondStudent)
+    {
+        if (firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent) && secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent)) return 50;
+        if (firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent) && secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent)) return -50;
+
+        if (!firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent) && !firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent))
+        {
+            if (secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent)) return 25;
+            if (secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent)) return -25;
+        }
+
+        if (!secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent) && !secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent))
+        {
+            if (firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent)) return 25;
+            if (firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent)) return -25;
+        }
+
+        return 0;
+    }
+    private int TimeComparison(Student firstStudent, Student secondStudent)
+    {
+        int value=0;
+        foreach (var key in _timeDictionaryKeys)
+        {
+            foreach (var freeTimeNode in firstStudent.AnswersToQuestionnaire.StudentFreeTime[key])
+            {
+                if (secondStudent.AnswersToQuestionnaire.StudentFreeTime[key].Contains(freeTimeNode))
+                {
+                    value += 10;
+                }
+            }
+        }
+
+        return value;
     }
 }
