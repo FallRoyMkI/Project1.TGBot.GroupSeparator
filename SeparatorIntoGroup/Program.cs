@@ -22,7 +22,3 @@ testGroup.AddStudentToGroup(student2);
 //testGroup.WriteInfoGroup();
 
 Questionnaire qqq = new Questionnaire();
-qqq.QuestionAboutTime("18:50", "2");
-
-BotManager manager = new BotManager();
-Console.ReadLine();

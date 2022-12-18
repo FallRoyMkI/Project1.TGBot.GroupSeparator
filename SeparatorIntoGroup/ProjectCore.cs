@@ -9,12 +9,25 @@ public class ProjectCore
     public List<Group> Groups { get; set; }
     public string Path { get; set; }
 
-    public ProjectCore()
+    private static ProjectCore _projectCore;
+
+    private ProjectCore()
     {
         Teachers = new List<Teacher>();
         Students = new List<Student>();
         Groups = new List<Group>();
         Path = "../Storage.txt";
+        _projectCore.LoadAll();
+    }
+
+    public static ProjectCore GetProjectCore()
+    {
+        if (_projectCore == null)
+        {
+           _projectCore = new ProjectCore();
+        }
+
+        return _projectCore;
     }
 
     public void SaveAll()
