@@ -6,16 +6,16 @@ public class Teacher : AbstractPersons
 {
     private ProjectCore _projectCore;
 
-    public Teacher(int id, string name, string userName)
+    public Teacher(long id, string personName, string accountName)
     {
         Id = id;
-        PersonName = name;
-        AccountName = userName;
+        PersonName = personName;
+        AccountName = accountName;
         Status = StatusType.IsTeacher;
         _projectCore = ProjectCore.GetProjectCore();
     }
 
-    public void CreateNewStudent(int id, string name, string userName)
+    public void CreateNewStudent(long id, string name, string userName)
     {
         Student student = new Student(id, name, userName);
         _projectCore.Students.Add(student);
@@ -44,6 +44,7 @@ public class Teacher : AbstractPersons
         group.RemoveStudentFromGroup(student);
         _projectCore.SaveAll();
     }
+
     public void DeleteGroup(Group group)
     {
         group.ClearGroup();
@@ -71,5 +72,14 @@ public class Teacher : AbstractPersons
     {
         group.DeleteTeamFromGroup(team);
         _projectCore.SaveAll();
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Teacher teacher &&
+               Id == teacher.Id &&
+               PersonName == teacher.PersonName &&
+               AccountName == teacher.AccountName &&
+               Status == teacher.Status;
     }
 }

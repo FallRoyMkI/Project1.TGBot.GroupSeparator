@@ -37,4 +37,12 @@ public class Questionnaire
     {
         NotWishStudents = list;
     }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Questionnaire answers &&
+               StudentFreeTime == answers.StudentFreeTime &&
+               WishStudents == answers.WishStudents &&
+               NotWishStudents == answers.NotWishStudents;
+    }
 }

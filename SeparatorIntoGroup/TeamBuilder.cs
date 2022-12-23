@@ -27,8 +27,8 @@ public class TeamBuilder
 
         CreationRandomStudentsIndexes();
     }
-   
-    
+
+
     public void TeamBuild()
     {
         for (int i = 0; i < TeamList.Count; i++)
@@ -45,7 +45,7 @@ public class TeamBuilder
                 for (int i = 0; i < team.Count; i++)
                 {
                     student = team[i];
-                    _connectionValueForTeams[TeamList.FindIndex(x => x == team)] 
+                    _connectionValueForTeams[TeamList.FindIndex(x => x == team)]
                         += _connectionValueForStudents[studentIndex, StudentsForDistribution.FindIndex(x => x == student)];
                 }
                 TeamList[GetIndexOfTeamForJoining(IndexArrayCreation(_connectionValueForTeams))].Add(StudentsForDistribution[studentIndex]);
@@ -58,7 +58,7 @@ public class TeamBuilder
     private void CreateConnections()
     {
         int value;
-        for (int i=0; i< StudentsForDistribution.Count; i++)
+        for (int i = 0; i < StudentsForDistribution.Count; i++)
         {
             for (int j = 0; j < StudentsForDistribution.Count; j++)
             {
@@ -71,7 +71,7 @@ public class TeamBuilder
                 {
                     value += WishListsComparison(StudentsForDistribution[i], StudentsForDistribution[j]);
                     value += TimeComparison(StudentsForDistribution[i], StudentsForDistribution[j]);
-                
+
                     _connectionValueForStudents[i, j] = value;
                 }
             }
@@ -83,7 +83,7 @@ public class TeamBuilder
         for (int i = 0; i < StudentsForDistribution.Count; i++)
         {
             int randomIndex = random.Next(StudentsForDistribution.Count + 1);
-            while (_randomStudentIndexes[i] != randomIndex )
+            while (_randomStudentIndexes[i] != randomIndex)
             {
                 if (!_randomStudentIndexes.Contains(randomIndex))
                 {
@@ -124,7 +124,7 @@ public class TeamBuilder
                     maxValueIndex = j;
                     int temp = array[i];
                     array[i] = array[j];
-                    array[j]= temp;
+                    array[j] = temp;
                 }
             }
             indexArray[i] = maxValueIndex;
@@ -154,7 +154,7 @@ public class TeamBuilder
     }
     private int TimeComparison(Student firstStudent, Student secondStudent)
     {
-        int value=0;
+        int value = 0;
         foreach (var key in _timeDictionaryKeys)
         {
             foreach (var freeTimeNode in firstStudent.AnswersToQuestionnaire.StudentFreeTime[key])

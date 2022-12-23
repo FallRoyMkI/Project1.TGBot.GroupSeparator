@@ -12,6 +12,8 @@ namespace SeparatorIntoGroup
         private const string Test2 = "Test2";
         private const string Test3 = "Test3";
         private const string Test4 = "Test4";
+        private ProjectCore _projectCore;
+        Teacher _admin;
 
         public BotManager()
         {
@@ -34,12 +36,10 @@ namespace SeparatorIntoGroup
                 Limit = (20)
             };
 
-            _bot.StartReceiving(
-                HandleUpdateAsync,
-                HandleErrorAsync,
-                receiverOptions,
-                cancellationToken
-            );
+            _bot.StartReceiving(HandleUpdateAsync, HandleErrorAsync, receiverOptions, cancellationToken);
+
+            _projectCore = ProjectCore.GetProjectCore();
+            _projectCore.LoadAll();
         }
 
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -52,6 +52,16 @@ namespace SeparatorIntoGroup
             Console.WriteLine();
             Console.ResetColor();
 
+            if (_projectCore.Teachers.Contains(_projectCore.Teachers.Find(x => x.Id == update.Message.Chat.Id)))
+            {
+                _bot.SendTextMessageAsync(update.Message.Chat.Id, "Вы авторизованы как учитель");
+            }
+            else if (!_projectCore.Students.Contains(_projectCore.Students.Find(x => x.Id == update.Message.Chat.Id)))
+            {
+                _admin.CreateNewStudent(update.Message.Chat.Id,update.Message.Chat.FirstName, update.Message.Chat.Username);
+            }
+            
+            
             if (update.Message.Text is not null)
             {
                 Console.WriteLine(update.Message.Text);
@@ -76,9 +86,10 @@ namespace SeparatorIntoGroup
                     _bot.SendTextMessageAsync(update.Message.Chat.Id, "Для начала работы бота введи: /start");
                 }
             }
+
         }
 
-        public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+            public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
 
         }

@@ -4,27 +4,30 @@ namespace SeparatorIntoGroup;
 
 public class Student: AbstractPersons
 {
-    public Group? Group { get; set; }
-    public Team? Team { get; set; }
+    public int GroupId { get; set; }
+    public int TeamId { get; set; }
     public Questionnaire? AnswersToQuestionnaire { get; set; }
 
-    public Student(int id, string name, string userName)
+    public Student(long id, string personName, string accountName)
     {
         Id = id;
-        PersonName = name;
-        AccountName = userName;
+        PersonName = personName;
+        AccountName = accountName;
         Status = StatusType.NotInGroup;
-        Group = null;
-        Team = null;
+        GroupId = -1;
+        TeamId = -1;
         AnswersToQuestionnaire = null;
     }
 
-    public void Ask(Student student)
+    public override bool Equals(object? obj)
     {
-        Questionnaire question = new Questionnaire();
-        question.QuestionAboutWishStudents(new List<Student>());
-        question.QuestionAboutNotWishStudents(new List<Student>());
-        question.QuestionAboutTime("18:50", "2");
-        student.AnswersToQuestionnaire = question;
+        return obj is Student student &&
+               Id == student.Id &&
+               PersonName == student.PersonName &&
+               AccountName == student.AccountName &&
+               Status == student.Status &&
+               GroupId == student.GroupId &&
+               TeamId == student.TeamId &&
+               AnswersToQuestionnaire == student.AnswersToQuestionnaire;
     }
 }

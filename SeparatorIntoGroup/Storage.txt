@@ -1,0 +1,3 @@
+[{"Id":0,"PersonName":"Admin","AccountName":"@Admin","Status":4},{"Id":1090021711,"PersonName":"Kot","AccountName":"@glotailubovmou","Status":4}]
+[{"Group":null,"Team":null,"AnswersToQuestionnaire":null,"Id":0,"PersonName":"TestStudent","AccountName":"@TestStudent","Status":0}]
+[{"Id":0,"Name":"TestGroup","StudentsInGroup":[],"TeamsInGroup":[{"Id":0,"Name":"TestTeam","StudentsInTeam":[]}]}]

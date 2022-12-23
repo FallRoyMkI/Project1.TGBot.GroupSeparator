@@ -5,13 +5,13 @@ namespace SeparatorIntoGroup;
 public class Team
 {
     public int Id { get; set; }
-    public string TeamName { get; set; }
+    public string Name { get; set; }
     public List<Student> StudentsInTeam { get; set; }
 
     public Team(int id, string name)
     {
         Id = id;
-        TeamName = name;
+        Name = name;
         StudentsInTeam = new List<Student>();
     }
 
@@ -19,14 +19,17 @@ public class Team
     {
         StudentsInTeam.Add(student);
         student.Status = StatusType.InTeam;
-        student.Team = this;
+        student.TeamId = Id;
     }
 
     public void RemoveStudentFromTeam(Student student)
     {
-        StudentsInTeam.Remove(student);
-        student.Status = StatusType.PassedSurvey;
-        student.Team = null;
+        if (StudentsInTeam.Contains(student))
+        {
+            StudentsInTeam.Remove(student);
+            student.Status = StatusType.PassedSurvey;
+            student.TeamId = -1;
+        }
     }
 
     public void RemoveAllStudentsFromTeam()
@@ -34,26 +37,32 @@ public class Team
         foreach (var student in StudentsInTeam)
         {
             student.Status = StatusType.PassedSurvey;
-            student.Team = null;
+            student.TeamId = -1;
         }
 
         StudentsInTeam.Clear();
     }
 
-    public void WriteInfoTeam()
-    {
-        Console.WriteLine($"Id: {Id}");
-        Console.WriteLine($"Name: {TeamName}");
-        Console.Write("Members:");
-        foreach (var student in StudentsInTeam)
-        {
-            Console.WriteLine($" {student.Id} {student.PersonName}");
-        }
-    }
-
     public override bool Equals(object? obj)
     {
+        if (obj is Team)
+        {
+            List<Student> students = ((Team)obj).StudentsInTeam;
+            if (StudentsInTeam.Count != students.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < StudentsInTeam.Count; i++)
+            {
+                if (!students[i].Equals(StudentsInTeam[i]))
+                {
+                    return false;
+                }
+            }
+        }
         return obj is Team team &&
-               Id == team.Id;
+               Id == team.Id &&
+               Name == team.Name;
     }
 }
