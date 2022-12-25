@@ -12,6 +12,7 @@ namespace SeparatorIntoGroup
         private static ITelegramBotClient _bot;
         private ProjectCore _projectCore;
         private Teacher _teacher;
+        private TmpUsersController _tmpUser = new TmpUsersController();
 
         public BotManager()
         {
@@ -48,46 +49,13 @@ namespace SeparatorIntoGroup
             string tmpUserName = GetUserName(update);
 
             Console.WriteLine("Есть контакт!");
-            Console.WriteLine($"FirstName: {tmpUserName}");
-            Console.WriteLine($"Id: {id}");
             Console.WriteLine();
 
-            if (_projectCore.Teachers.Contains(_projectCore.Teachers.Find(x => x.Id == update.Message.Chat.Id)))
-            {
-                _bot.SendTextMessageAsync(update.Message.Chat.Id, "Вы авторизованы как учитель");
-            }
-            else if (!_projectCore.Students.Contains(_projectCore.Students.Find(x => x.Id == update.Message.Chat.Id))) 
-            {
-                _teacher.CreateNewStudent(id, tmpUserName, update.Message.Chat.Username);
-            }
-            //if (!_activeUsers.IsContais(id))
-            //{
-            //    _activeUsers.AddActiveMember(id);
-            //}
+            UsersAvtorisation(update, id, tmpUserName);
 
-                //if (update.Message.Text is not null)
-                //{
-                //    Console.WriteLine(update.Message.Text);
-                //    if (update.Message.Text.ToLower() == "/start")
-                //    {
-                //        if (update.Message.Chat.Id == 522974861)
-                //        {
-                //            _bot.SendTextMessageAsync(update.Message.Chat.Id, $"Привет {update.Message.Chat.FirstName}!", replyMarkup: GetButtons());
-                //        }
-                //        else
-                //        {
-                //            Console.BackgroundColor = ConsoleColor.Red;
-                //            Console.WriteLine("unregistered user");
-                //            Console.ResetColor();
+            MessageModel message = _tmpUser[id].GetAnswer(update);
 
-                //            _bot.SendTextMessageAsync(update.Message.Chat.Id, "Ты кто?");
-                //        }
-                //    }
-                //    else
-                //    {
-                //        _bot.SendTextMessageAsync(update.Message.Chat.Id, "Для начала работы бота введи: /start");
-                //    }
-                //}
+            await _bot.SendTextMessageAsync(id, message.Text, replyMarkup: message.Keyboard);
         }
 
         public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
@@ -118,6 +86,31 @@ namespace SeparatorIntoGroup
                     return update.CallbackQuery.From.FirstName;
                 default:
                     throw new Exception();
+            }
+        }
+
+        private void UsersAvtorisation(Update update, long id, string tmpUserName)
+        {
+            if (_projectCore.Teachers.Contains(_projectCore.Teachers.Find(x => x.Id == id)))
+            {
+                Console.WriteLine($"авторизован преподаватель: {tmpUserName}");
+                _bot.SendTextMessageAsync(id, "Вы авторизованы как учитель");
+            }
+            else if (!_projectCore.Students.Contains(_projectCore.Students.Find(x => x.Id == id)))
+            {
+                Console.WriteLine($"авторизован студент c добавлением в Storage: {tmpUserName}. Id: {id}");
+                _tmpUser.AddUsers(id);
+                _teacher.CreateNewStudent(id, tmpUserName, update.Message.Chat.Username);
+                _bot.SendTextMessageAsync(id, "Вы авторизованы как студент");
+            }
+            else
+            {
+                Console.WriteLine($"авторизован студент: {tmpUserName}. Id: {id}");
+                if (!_tmpUser.IsContais(id))
+                {
+                    _tmpUser.AddUsers(id);
+                }
+                _bot.SendTextMessageAsync(id, "Вы авторизованы как студент");
             }
         }
 
