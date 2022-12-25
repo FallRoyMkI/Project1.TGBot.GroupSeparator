@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types;
+using SeparatorIntoGroup.TgBot.States;
 
 namespace SeparatorIntoGroup
 {
@@ -23,7 +24,10 @@ namespace SeparatorIntoGroup
                         long groupKey = Convert.ToInt64(update.Message.Text);
                         if (_projectCore.Groups.Contains(_projectCore.Groups.Find(x => x.Id == groupKey)))
                         {
+                            controller.State = new StateIntoGroup();
                             result = StudentMessageGenerator.GroupMenu;
+                            _projectCore.Students.Find(x => x.Id == update.Message.Chat.Id).Status = Options.StatusType.InGroup;
+                            _projectCore.SaveAll();
                         }
                     }
                     break;

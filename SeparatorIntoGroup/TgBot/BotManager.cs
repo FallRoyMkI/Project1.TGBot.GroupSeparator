@@ -27,8 +27,9 @@ namespace SeparatorIntoGroup
             var receiverOptions = new ReceiverOptions
             {
                 AllowedUpdates = { },
-                Limit = (1),
-                
+                //Limit = (1),
+                ThrowPendingUpdates = true
+
             };
 
             _bot.StartReceiving(
@@ -94,13 +95,16 @@ namespace SeparatorIntoGroup
             if (_projectCore.Teachers.Contains(_projectCore.Teachers.Find(x => x.Id == id)))
             {
                 Console.WriteLine($"авторизован преподаватель: {tmpUserName}");
-                _bot.SendTextMessageAsync(id, "Вы авторизованы как учитель");
+                if (!_tmpUser.IsContais(id))
+                {
+                    _tmpUser.AddUsers(id);
+                }
             }
             else if (!_projectCore.Students.Contains(_projectCore.Students.Find(x => x.Id == id)))
             {
                 Console.WriteLine($"авторизован студент c добавлением в Storage: {tmpUserName}. Id: {id}");
-                _tmpUser.AddUsers(id);
                 _teacher.CreateNewStudent(id, tmpUserName, update.Message.Chat.Username);
+                _tmpUser.AddUsers(id);
                 _bot.SendTextMessageAsync(id, "Вы авторизованы как студент");
             }
             else
@@ -110,7 +114,6 @@ namespace SeparatorIntoGroup
                 {
                     _tmpUser.AddUsers(id);
                 }
-                _bot.SendTextMessageAsync(id, "Вы авторизованы как студент");
             }
         }
 

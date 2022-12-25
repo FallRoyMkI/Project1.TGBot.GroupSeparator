@@ -43,8 +43,11 @@ namespace SeparatorIntoGroup
                             {
                                 new InlineKeyboardButton("Статус") { CallbackData = "status" },
                                 new InlineKeyboardButton("Пройти опрос") { CallbackData = "goToQuestionnaire" },
-                                new InlineKeyboardButton("Посмотреть участников группы") { CallbackData = "groupMembers" }
                             },
+                            new[]
+                            {
+                            new InlineKeyboardButton("Посмотреть участников группы") { CallbackData = "groupMembers" } 
+                            }
                         })
                 };
             }
@@ -68,7 +71,7 @@ namespace SeparatorIntoGroup
             {
                 return new MessageModel()
                 {
-                    Text = "Такого ключа нет, уточните ключ у преподавателя",
+                    Text = "Такого ключа нет, уточните ключ у преподавателя и введите еще раз",
                     Keyboard = null
                 };
             }

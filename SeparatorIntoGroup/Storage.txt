@@ -1,3 +1,3 @@
-[{"Id":0,"PersonName":"Admin","AccountName":"@Admin","Status":4},{"Id":1090021711,"PersonName":"Kot","AccountName":"@glotailubovmou","Status":4}]
-[{"GroupId":-1,"TeamId":-1,"AnswersToQuestionnaire":null,"Id":0,"PersonName":"TestStudent","AccountName":"@TestStudent","Status":0},{"GroupId":-1,"TeamId":-1,"AnswersToQuestionnaire":null,"Id":522974861,"PersonName":"Vlad","AccountName":"nutmeg_v","Status":0}]
+[{"Id":0,"PersonName":"Admin","AccountName":"@Admin","Status":4}]
+[{"GroupId":-1,"TeamId":-1,"AnswersToQuestionnaire":null,"Id":0,"PersonName":"TestStudent","AccountName":"@TestStudent","Status":0},{"GroupId":-1,"TeamId":-1,"AnswersToQuestionnaire":null,"Id":522974861,"PersonName":"Vlad","AccountName":"nutmeg_v","Status":1},{"GroupId":-1,"TeamId":-1,"AnswersToQuestionnaire":null,"Id":1090021711,"PersonName":".","AccountName":"glotailubovmou","Status":1}]
 [{"Id":0,"Name":"TestGroup","StudentsInGroup":[],"TeamsInGroup":[{"Id":0,"Name":"TestTeam","StudentsInTeam":[]}]}]
