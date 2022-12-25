@@ -27,7 +27,6 @@ public class Teacher : AbstractPersons
         _projectCore.SaveAll();
     }
 
-
     public void CreateNewGroup(int id, string name)
     {
         Group group = new Group(id, name);

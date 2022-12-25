@@ -16,7 +16,7 @@ public class ProjectCore
         Teachers = new List<Teacher>();
         Students = new List<Student>();
         Groups = new List<Group>();
-        Path = "../Storage.txt";
+        Path = "../../../Storage.txt";
         _projectCore.LoadAll();
     }
 
