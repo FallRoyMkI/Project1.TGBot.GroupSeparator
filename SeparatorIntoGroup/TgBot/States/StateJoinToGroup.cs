@@ -18,16 +18,29 @@ namespace SeparatorIntoGroup
             switch (update.Type)
             {
                 case UpdateType.Message:
-                    long groupKey = Convert.ToInt64(update.Message.Text);
-                    if (_projectCore.Groups.Contains(_projectCore.Groups.Find(x => x.Id == groupKey)))
+                    if (СheckTypeOfText(update.Message.Text))
                     {
-                        result = StudentMessageGenerator.GroupMenu;
+                        long groupKey = Convert.ToInt64(update.Message.Text);
+                        if (_projectCore.Groups.Contains(_projectCore.Groups.Find(x => x.Id == groupKey)))
+                        {
+                            result = StudentMessageGenerator.GroupMenu;
+                        }
                     }
-
                     break;
             }
 
             return result;
+        }
+        private bool СheckTypeOfText(string text) 
+        {
+            for(int i = 0; i < text.Length; i++) 
+            {
+                if (!Char.IsDigit(text[i])) 
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
