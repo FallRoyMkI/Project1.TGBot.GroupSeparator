@@ -10,31 +10,24 @@ namespace SeparatorIntoGroup
     public class BotManager
     {
         private static ITelegramBotClient _bot;
-        //private TmpUsersController _users;
         private ProjectCore _projectCore;
-        private Student _studen;
         private Teacher _teacher;
 
         public BotManager()
         {
-            string token = @"5941068451:AAEAgguiOPtThpnOdg2QH88QlK7iMah22pM";
+            string token = @"5941068451:AAHcTxwqCpEagEKEN4eRbC2XwttUvqJHgMs";
             _bot = new TelegramBotClient(token);
 
-            Console.BackgroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Запущен бот");
-            Console.WriteLine($"id: {_bot.GetMeAsync().Result.Id}");
-            Console.WriteLine($"Name: {_bot.GetMeAsync().Result.FirstName}");
-            Console.WriteLine();
-            Console.ResetColor();
+            Console.WriteLine("Запущен бот");
 
             var cts = new CancellationTokenSource();
             var cancellationToken = cts.Token;
 
             var receiverOptions = new ReceiverOptions
             {
-                AllowedUpdates = new UpdateType[] { UpdateType.CallbackQuery }, //add UpdateType.Message,
-                Limit = (20),
-                ThrowPendingUpdates = true // delete all pending updates at startup
+                AllowedUpdates = { },
+                Limit = (1),
+                
             };
 
             _bot.StartReceiving(
@@ -43,6 +36,10 @@ namespace SeparatorIntoGroup
                 receiverOptions,
                 cancellationToken
             );
+
+            _projectCore = ProjectCore.GetProjectCore();
+            _projectCore.LoadAll();
+            _teacher = new Teacher(0, "admin", "@admin");
         }
 
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -50,19 +47,18 @@ namespace SeparatorIntoGroup
             long id = GetUserId(update);
             string tmpUserName = GetUserName(update);
 
-            Console.BackgroundColor = ConsoleColor.Blue;
-            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Есть контакт!");
             Console.WriteLine($"FirstName: {tmpUserName}");
             Console.WriteLine($"Id: {id}");
             Console.WriteLine();
-            Console.ResetColor();
 
-            
-
-            if (!_projectCore.Students.Contains(_projectCore.Students.Find(x => x.Id == update.Message.Chat.Id))) 
+            if (_projectCore.Teachers.Contains(_projectCore.Teachers.Find(x => x.Id == update.Message.Chat.Id)))
             {
-                _teacher.CreateNewStudent(id, update.Message.Chat.FirstName, update.Message.Chat.Username);
+                _bot.SendTextMessageAsync(update.Message.Chat.Id, "Вы авторизованы как учитель");
+            }
+            else if (!_projectCore.Students.Contains(_projectCore.Students.Find(x => x.Id == update.Message.Chat.Id))) 
+            {
+                _teacher.CreateNewStudent(id, tmpUserName, update.Message.Chat.Username);
             }
             //if (!_activeUsers.IsContais(id))
             //{
