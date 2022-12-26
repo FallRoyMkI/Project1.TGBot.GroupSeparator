@@ -5,13 +5,13 @@ namespace SeparatorIntoGroup;
 public class Questionnaire
 {
     public Dictionary<TimeDictionaryKeys, List<TimeDictionaryValues>> StudentFreeTime { get; set; }
-    public List<Student> WishStudents { get; set; }
-    public List<Student> NotWishStudents { get; set; }
+    public List<string> WishStudents { get; set; }
+    public List<string> NotWishStudents { get; set; }
 
     public Questionnaire()
     {
-        WishStudents = new List<Student>();
-        NotWishStudents = new List<Student>();
+        WishStudents = new List<string>();
+        NotWishStudents = new List<string>();
         StudentFreeTime = new Dictionary<TimeDictionaryKeys, List<TimeDictionaryValues>>()
         {
             { TimeDictionaryKeys.Monday, new List<TimeDictionaryValues>() },
@@ -29,20 +29,62 @@ public class Questionnaire
     {
         StudentFreeTime[key].AddRange(values);
     }
-    public void QuestionAboutWishStudents(List<Student> list)
-    {
-        WishStudents = list;
-    }
-    public void QuestionAboutNotWishStudents(List<Student> list)
-    {
-        NotWishStudents = list;
-    }
+   
+   
 
     public override bool Equals(object? obj)
     {
-        return obj is Questionnaire answers &&
-               StudentFreeTime == answers.StudentFreeTime &&
-               WishStudents == answers.WishStudents &&
-               NotWishStudents == answers.NotWishStudents;
+        if (obj is Questionnaire)
+        {
+            List<string> wishStudents = ((Questionnaire)obj).WishStudents;
+            if (WishStudents.Count != wishStudents.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < WishStudents.Count; i++)
+            {
+                if (!wishStudents[i].Equals(WishStudents[i]))
+                {
+                    return false;
+                }
+            }
+        }
+        if (obj is Questionnaire)
+        {
+            List<string> notWishStudents = ((Questionnaire)obj).NotWishStudents;
+            if (NotWishStudents.Count != notWishStudents.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < NotWishStudents.Count; i++)
+            {
+                if (!notWishStudents[i].Equals(NotWishStudents[i]))
+                {
+                    return false;
+                }
+            }
+        }
+        if (obj is Questionnaire)
+        {
+            Dictionary<TimeDictionaryKeys, List<TimeDictionaryValues>> studentFreeTime  = ((Questionnaire)obj).StudentFreeTime;
+            var listone = studentFreeTime.ToList();
+            var listtwo = StudentFreeTime.ToList();
+            if (listtwo.Count != listone.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < listtwo.Count; i++)
+            {
+                if (!listone[i].Equals(listtwo[i]))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

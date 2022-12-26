@@ -14,7 +14,7 @@ namespace SeparatorIntoGroup
         private ProjectCore _projectCore = ProjectCore.GetProjectCore();
         public MessageModel HandleUpdate(Update update, MemberController controller)
         {
-            MessageModel result = StudentMessageGenerator.WrongGroupAvtorizationKey;
+            MessageModel result = StudentMessageGenerator.WrongGroupAuthorizationKey;
 
             switch (update.Type)
             {
@@ -27,6 +27,7 @@ namespace SeparatorIntoGroup
                             controller.State = new StateIntoGroup();
                             result = StudentMessageGenerator.GroupMenu;
                             _projectCore.Students.Find(x => x.Id == update.Message.Chat.Id).Status = Options.StatusType.InGroup;
+                            _projectCore.Students.Find(x => x.Id == update.Message.Chat.Id).GroupId = groupKey;
                             _projectCore.SaveAll();
                         }
                     }

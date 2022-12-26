@@ -126,5 +126,10 @@ namespace SeparatorIntoGroup
                 }
             );
         }
+
+        public static void DeleteOldReplyMarkup(Update update)
+        {
+           _bot.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, update.CallbackQuery.Message.Text, replyMarkup: null);
+        }
     }
 }

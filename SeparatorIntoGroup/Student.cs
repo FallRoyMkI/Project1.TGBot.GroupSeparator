@@ -4,8 +4,8 @@ namespace SeparatorIntoGroup;
 
 public class Student: AbstractPersons
 {
-    public int GroupId { get; set; }
-    public int TeamId { get; set; }
+    public long GroupId { get; set; }
+    public long TeamId { get; set; }
     public Questionnaire? AnswersToQuestionnaire { get; set; }
 
     public Student(long id, string personName, string accountName)
@@ -16,7 +16,7 @@ public class Student: AbstractPersons
         Status = StatusType.NotInGroup;
         GroupId = -1;
         TeamId = -1;
-        AnswersToQuestionnaire = null;
+        AnswersToQuestionnaire = new Questionnaire();
     }
 
     public override bool Equals(object? obj)

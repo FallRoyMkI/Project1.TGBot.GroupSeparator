@@ -135,19 +135,23 @@ public class TeamBuilder
 
     private int WishListsComparison(Student firstStudent, Student secondStudent)
     {
-        if (firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent) && secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent)) return 50;
-        if (firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent) && secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent)) return -50;
+        if (firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent.AccountName) 
+            && secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent.AccountName)) return 50;
+        if (firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent.AccountName) 
+            && secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent.AccountName)) return -50;
 
-        if (!firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent) && !firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent))
+        if (!firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent.AccountName)
+            && !firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent.AccountName))
         {
-            if (secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent)) return 25;
-            if (secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent)) return -25;
+            if (secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent.AccountName)) return 25;
+            if (secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent.AccountName)) return -25;
         }
 
-        if (!secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent) && !secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent))
+        if (!secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent.AccountName) 
+            && !secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent.AccountName))
         {
-            if (firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent)) return 25;
-            if (firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent)) return -25;
+            if (firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent.AccountName)) return 25;
+            if (firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent.AccountName)) return -25;
         }
 
         return 0;

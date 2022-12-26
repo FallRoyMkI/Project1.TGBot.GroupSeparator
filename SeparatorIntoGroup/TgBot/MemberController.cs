@@ -20,6 +20,9 @@ namespace SeparatorIntoGroup
                 case StatusType.InGroup:
                     State = new StateIntoGroup();
                     break;
+                case StatusType.PassedSurvey:
+                    State = new StateIntoGroup();
+                    break;
                 default:
                     State = new StartState();
                     break;
