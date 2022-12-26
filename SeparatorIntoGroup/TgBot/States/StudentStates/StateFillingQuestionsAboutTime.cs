@@ -7,18 +7,17 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types;
 using SeparatorIntoGroup.Options;
 
-namespace SeparatorIntoGroup.TgBot.States
+namespace SeparatorIntoGroup.TgBot.States.StudentStates
 {
-    public class StateFillingTimeQuestionary : IState
+    public class StateFillingQuestionsAboutTime : IState
     {
         private ProjectCore _projectCore = ProjectCore.GetProjectCore();
-        private bool _halfquestion = false;
+        private bool _isAnsweredOnDayQuestion = false;
 
         public MessageModel HandleUpdate(Update update, MemberController controller)
         {
-            
             MessageModel result = StudentMessageGenerator.QuestionAboutFreeDays;
-            switch (_halfquestion)
+            switch (_isAnsweredOnDayQuestion)
             {
                 case false:
                     switch (update.Type)
@@ -63,14 +62,14 @@ namespace SeparatorIntoGroup.TgBot.States
 
                                 case "done":
                                     BotManager.DeleteOldReplyMarkup(update);
-                                    _halfquestion = true;
+                                    _isAnsweredOnDayQuestion = true;
                                     result = StudentMessageGenerator.QuestionAboutFreeTime;
                                     break;
                             }
                             break;
                     }
                     break;
-                    
+
                 case true:
                     switch (update.Type)
                     {
@@ -110,7 +109,7 @@ namespace SeparatorIntoGroup.TgBot.States
                                 case "done":
                                     BotManager.DeleteOldReplyMarkup(update);
                                     result = StudentMessageGenerator.QuestionAboutWishStudents;
-                                    controller.State = new StateFillingStudentsQuestionary();
+                                    controller.State = new StateFillingQuestionsAboutStudents();
                                     break;
                             }
 

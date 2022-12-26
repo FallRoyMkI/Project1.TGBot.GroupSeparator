@@ -8,9 +8,9 @@ using Telegram.Bot.Types;
 using SeparatorIntoGroup.Options;
 using Telegram.Bot;
 
-namespace SeparatorIntoGroup
+namespace SeparatorIntoGroup.TgBot.States.StudentStates
 {
-    public class StartState : IState
+    public class StartStudentState : IState
     {
         private ProjectCore _projectCore = ProjectCore.GetProjectCore();
         public MessageModel HandleUpdate(Update update, MemberController controller)

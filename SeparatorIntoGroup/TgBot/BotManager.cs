@@ -42,6 +42,8 @@ namespace SeparatorIntoGroup
             _projectCore = ProjectCore.GetProjectCore();
             _projectCore.LoadAll();
             _teacher = new Teacher(0, "admin", "@admin");
+            _projectCore.Teachers[0] = _teacher;
+            _projectCore.SaveAll();
         }
 
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -97,13 +99,20 @@ namespace SeparatorIntoGroup
                 Console.WriteLine($"авторизован преподаватель: {tmpUserName}");
                 if (!_tmpUser.IsContais(id))
                 {
-                    _tmpUser.AddUsers(id);
+                    _tmpUser.AddTeacher(id);
                 }
             }
             else if (!_projectCore.Students.Contains(_projectCore.Students.Find(x => x.Id == id)))
             {
                 Console.WriteLine($"авторизован студент c добавлением в Storage: {tmpUserName}. Id: {id}");
-                _teacher.CreateNewStudent(id, tmpUserName, update.Message.Chat.Username);
+                if (update.Message != null)
+                {
+                    _teacher.CreateNewStudent(id, tmpUserName, update.Message.Chat.Username);
+                }
+                else
+                {
+                    _teacher.CreateNewStudent(id, tmpUserName, "@NOINFO");
+                }
                 _tmpUser.AddUsers(id);
                 _bot.SendTextMessageAsync(id, "Вы авторизованы как студент");
             }
@@ -130,6 +139,10 @@ namespace SeparatorIntoGroup
         public static void DeleteOldReplyMarkup(Update update)
         {
            _bot.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, update.CallbackQuery.Message.Text, replyMarkup: null);
+        }
+        public static void DeleteOldReplyForMessage(Update update)
+        {
+            _bot.EditMessageTextAsync(update.Message.Chat.Id, update.Message.MessageId, update.Message.Text, replyMarkup: null);
         }
     }
 }

@@ -9,11 +9,21 @@ public class TeamBuilder
     private int[] _numberOfMembersInTeam;
     private int[,] _connectionValueForStudents;
     private int[] _connectionValueForTeams;
-    private List<int> _randomStudentIndexes;
-    private IEnumerable<TimeDictionaryKeys> _timeDictionaryKeys;
+    private List<int> _randomStudentIndexes = new List<int>();
+    private IEnumerable<TimeDictionaryKeys> _timeDictionaryKeys= new []
+    {
+        TimeDictionaryKeys.Monday,
+        TimeDictionaryKeys.Tuesday,
+        TimeDictionaryKeys.Wednesday,
+        TimeDictionaryKeys.Thursday,
+        TimeDictionaryKeys.Friday,
+        TimeDictionaryKeys.Saturday,
+        TimeDictionaryKeys.Sunday,
+    };
 
     public TeamBuilder(Group group, int[] numberOfTeamMembers) // тут массив вида 3/3/3/3/2/2/5 по участникам команд
     {
+        TeamList = new List<List<Student>>();
         StudentsForDistribution = group.StudentsInGroup.FindAll(x => x.Status == StatusType.PassedSurvey);
         _numberOfMembersInTeam = numberOfTeamMembers;
         for (int i = 0; i < _numberOfMembersInTeam.Length; i++)
@@ -54,7 +64,6 @@ public class TeamBuilder
         }
     }
 
-
     private void CreateConnections()
     {
         int value;
@@ -80,19 +89,12 @@ public class TeamBuilder
     private void CreationRandomStudentsIndexes()
     {
         Random random = new Random();
-        for (int i = 0; i < StudentsForDistribution.Count; i++)
+        while (_randomStudentIndexes.Count != StudentsForDistribution.Count)
         {
-            int randomIndex = random.Next(StudentsForDistribution.Count + 1);
-            while (_randomStudentIndexes[i] != randomIndex)
+            int randomIndex = random.Next(StudentsForDistribution.Count);
+            if (!_randomStudentIndexes.Contains(randomIndex))
             {
-                if (!_randomStudentIndexes.Contains(randomIndex))
-                {
-                    _randomStudentIndexes[i] = randomIndex;
-                }
-                else
-                {
-                    randomIndex = random.Next(StudentsForDistribution.Count + 1);
-                }
+                _randomStudentIndexes.Add(randomIndex);
             }
         }
     }

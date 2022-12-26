@@ -7,12 +7,12 @@ namespace SeparatorIntoGroup;
 
 public class Group
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
     public string Name { get; set; }
     public List<Student> StudentsInGroup { get; set; }
     public List<Team> TeamsInGroup { get; set; }
 
-    public Group(int id, string name)
+    public Group(long id, string name)
     {
         Id = id;
         Name = name;

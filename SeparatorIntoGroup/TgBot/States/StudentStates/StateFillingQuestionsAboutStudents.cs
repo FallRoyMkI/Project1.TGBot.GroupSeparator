@@ -2,9 +2,9 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace SeparatorIntoGroup.TgBot.States;
+namespace SeparatorIntoGroup.TgBot.States.StudentStates;
 
-public class StateFillingStudentsQuestionary : IState
+public class StateFillingQuestionsAboutStudents : IState
 {
     private ProjectCore _projectCore = ProjectCore.GetProjectCore();
     private List<string> _str = new List<string>();
@@ -37,7 +37,10 @@ public class StateFillingStudentsQuestionary : IState
                         }
                         controller.State = new StateIntoGroup();
                         result = StudentMessageGenerator.GroupMenu;
+                        long groupId = _projectCore.Students.Find(x => x.Id == update.Message.Chat.Id).GroupId;
                         _projectCore.Students.Find(x => x.Id == update.Message.Chat.Id).Status = StatusType.PassedSurvey;
+                        _projectCore.Groups.Find(x => x.Id == groupId).StudentsInGroup
+                            .Find(x => x.Id == update.Message.Chat.Id).Status = StatusType.PassedSurvey;
                         _projectCore.SaveAll();
                         break;
                 }

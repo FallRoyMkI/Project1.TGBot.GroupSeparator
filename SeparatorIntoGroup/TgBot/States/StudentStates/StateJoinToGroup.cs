@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types;
-using SeparatorIntoGroup.TgBot.States;
 
-namespace SeparatorIntoGroup
+namespace SeparatorIntoGroup.TgBot.States.StudentStates
 {
     public class StateJoinToGroup : IState
     {
@@ -26,8 +25,8 @@ namespace SeparatorIntoGroup
                         {
                             controller.State = new StateIntoGroup();
                             result = StudentMessageGenerator.GroupMenu;
-                            _projectCore.Students.Find(x => x.Id == update.Message.Chat.Id).Status = Options.StatusType.InGroup;
-                            _projectCore.Students.Find(x => x.Id == update.Message.Chat.Id).GroupId = groupKey;
+                            _projectCore.Teachers[0].AddStudentToGroup(_projectCore.Groups.Find(x => x.Id == groupKey), 
+                                _projectCore.Students.Find(x => x.Id == update.Message.Chat.Id));
                             _projectCore.SaveAll();
                         }
                     }
@@ -36,11 +35,11 @@ namespace SeparatorIntoGroup
 
             return result;
         }
-        private bool СheckTypeOfText(string text) 
+        private bool СheckTypeOfText(string text)
         {
-            for(int i = 0; i < text.Length; i++) 
+            for (int i = 0; i < text.Length; i++)
             {
-                if (!Char.IsDigit(text[i])) 
+                if (!char.IsDigit(text[i]))
                 {
                     return false;
                 }

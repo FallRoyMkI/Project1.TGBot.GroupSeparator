@@ -17,7 +17,7 @@ public class Teacher : AbstractPersons
 
     public void CreateNewStudent(long id, string name, string userName)
     {
-        Student student = new Student(id, name, userName);
+        Student student = new Student(id, name, "@"+userName);
         _projectCore.Students.Add(student);
         _projectCore.SaveAll();
     }
@@ -27,7 +27,7 @@ public class Teacher : AbstractPersons
         _projectCore.SaveAll();
     }
 
-    public void CreateNewGroup(int id, string name)
+    public void CreateNewGroup(long id, string name)
     {
         Group group = new Group(id, name);
         _projectCore.Groups.Add(group);

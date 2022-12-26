@@ -9,7 +9,7 @@ using SeparatorIntoGroup.Options;
 using Telegram.Bot;
 using Microsoft.VisualBasic;
 
-namespace SeparatorIntoGroup.TgBot.States
+namespace SeparatorIntoGroup.TgBot.States.StudentStates
 {
     public class StateIntoGroup : IState
     {
@@ -25,7 +25,7 @@ namespace SeparatorIntoGroup.TgBot.States
                     {
                         case "goToQuestionnaire":
                             BotManager.DeleteOldReplyMarkup(update);
-                            controller.State = new StateFillingTimeQuestionary();
+                            controller.State = new StateFillingQuestionsAboutTime();
                             result = StudentMessageGenerator.QuestionAboutFreeDays;
                             break;
 
@@ -57,7 +57,7 @@ namespace SeparatorIntoGroup.TgBot.States
             students.AddRange(pc.Students.FindAll(x => x.GroupId == groupId));
             students.Remove(pc.Students.Find(x => x.Id == update.CallbackQuery.Message.Chat.Id));
             string studentInfo = "";
-            if (students.Count > 0 )
+            if (students.Count > 0)
             {
                 for (int i = 0; i < students.Count; i++)
                 {
