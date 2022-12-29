@@ -4,13 +4,13 @@ namespace SeparatorIntoGroup;
 
 public class TeamBuilder
 {
-    public List<Student> StudentsForDistribution { get; set; }
     public List<List<Student>> TeamList { get; private set; }
-    private int[] _numberOfMembersInTeam;
+    private List<Student> StudentsForDistribution;
+    private List<int> _numberOfMembersForEachTeam;
     private int[,] _connectionValueForStudents;
     private int[] _connectionValueForTeams;
     private List<int> _randomStudentIndexes = new List<int>();
-    private IEnumerable<TimeDictionaryKeys> _timeDictionaryKeys= new []
+    private IEnumerable<TimeDictionaryKeys> _timeDictionaryKeys = new[]
     {
         TimeDictionaryKeys.Понедельник,
         TimeDictionaryKeys.Вторник,
@@ -21,12 +21,14 @@ public class TeamBuilder
         TimeDictionaryKeys.Воскресенье,
     };
 
-    public TeamBuilder(Group group, int[] numberOfTeamMembers) // тут массив вида 3/3/3/3/2/2/5 по участникам команд
+    public TeamBuilder(List<Student> distribution, List<int> numberOfMembers)
     {
         TeamList = new List<List<Student>>();
-        StudentsForDistribution = group.StudentsInGroup.FindAll(x => x.Status == StatusType.PassedSurvey);
-        _numberOfMembersInTeam = numberOfTeamMembers;
-        for (int i = 0; i < _numberOfMembersInTeam.Length; i++)
+
+        StudentsForDistribution = distribution;
+        _numberOfMembersForEachTeam = numberOfMembers;
+
+        for (int i = 0; i < _numberOfMembersForEachTeam.Count; i++)
         {
             TeamList.Add(new List<Student>());
         }
@@ -43,7 +45,7 @@ public class TeamBuilder
     {
         for (int i = 0; i < TeamList.Count; i++)
         {
-            TeamList[i].Add(StudentsForDistribution[_randomStudentIndexes[i]]);  //добавляем капитаноф!)
+            TeamList[i].Add(StudentsForDistribution[_randomStudentIndexes[i]]); 
         }
 
         _randomStudentIndexes = _randomStudentIndexes.GetRange(TeamList.Count, _randomStudentIndexes.Count - TeamList.Count);
@@ -57,10 +59,11 @@ public class TeamBuilder
                     student = team[i];
                     _connectionValueForTeams[TeamList.FindIndex(x => x == team)]
                         += _connectionValueForStudents[studentIndex, StudentsForDistribution.FindIndex(x => x == student)];
+                    _connectionValueForTeams[TeamList.FindIndex(x => x == team)] /= team.Count;
                 }
-                TeamList[GetIndexOfTeamForJoining(IndexArrayCreation(_connectionValueForTeams))].Add(StudentsForDistribution[studentIndex]);
-                _connectionValueForTeams = new int[TeamList.Count];
             }
+            TeamList[GetIndexOfTeamForJoining(IndexArrayCreation(_connectionValueForTeams))].Add(StudentsForDistribution[studentIndex]);
+            _connectionValueForTeams = new int[TeamList.Count];
         }
     }
 
@@ -103,7 +106,7 @@ public class TeamBuilder
     {
         for (int i = 0; i < array.Length; i++)
         {
-            if (TeamList[i].Count < _numberOfMembersInTeam[i])
+            if (TeamList[i].Count < _numberOfMembersForEachTeam[i])
             {
                 return i;
             }
@@ -137,9 +140,9 @@ public class TeamBuilder
 
     private int WishListsComparison(Student firstStudent, Student secondStudent)
     {
-        if (firstStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(secondStudent.AccountName) 
+        if (firstStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(secondStudent.AccountName)
             && secondStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(firstStudent.AccountName)) return 50;
-        if (firstStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(secondStudent.AccountName) 
+        if (firstStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(secondStudent.AccountName)
             && secondStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(firstStudent.AccountName)) return -50;
 
         if (!firstStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(secondStudent.AccountName)
@@ -149,7 +152,7 @@ public class TeamBuilder
             if (secondStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(firstStudent.AccountName)) return -25;
         }
 
-        if (!secondStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(firstStudent.AccountName) 
+        if (!secondStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(firstStudent.AccountName)
             && !secondStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(firstStudent.AccountName))
         {
             if (firstStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(secondStudent.AccountName)) return 25;

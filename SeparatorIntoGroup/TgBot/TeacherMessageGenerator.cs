@@ -245,7 +245,7 @@ namespace SeparatorIntoGroup
             {
                 return new MessageModel()
                 {
-                    Text = "Что-то пошло не так, ещё раз введите размеры команд",
+                    Text = "Что-то пошло не так, введите другие размеры команд или уменьшите их количество",
                     Keyboard = null
                 };
             }
@@ -257,7 +257,8 @@ namespace SeparatorIntoGroup
                 return new MessageModel()
                 {
                     Text = "Пересборка началась",
-                    Keyboard = null
+                    Keyboard = null,
+                    IsNeedToBeEdited = false
                 };
             }
         }
@@ -268,7 +269,8 @@ namespace SeparatorIntoGroup
                 return new MessageModel()
                 {
                     Text = "Для составления команд недостаточно студентов прошло опрос",
-                    Keyboard = null
+                    Keyboard = null,
+                    IsNeedToBeEdited = false
                 };
             }
         }

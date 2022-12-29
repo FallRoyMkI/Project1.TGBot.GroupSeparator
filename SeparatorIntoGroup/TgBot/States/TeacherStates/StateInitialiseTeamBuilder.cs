@@ -8,14 +8,16 @@ namespace SeparatorIntoGroup.TgBot.States.TeacherStates;
 public class StateInitialiseTeamBuilder : IState
 {
     private ProjectCore _projectCore = ProjectCore.GetProjectCore();
-    private List<Student> _list = new List<Student>();
+    private List<Student> _studentsForDistribution = new List<Student>();
 
     public MessageModel HandleUpdate(Update update, MemberController controller)
     {
         MessageModel result = TeacherMessageGenerator.WrongInitialization;
-        _list.AddRange((_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId).StudentsInGroup).
+
+        _studentsForDistribution = ((_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId).StudentsInGroup).
             FindAll(x => x.Status == StatusType.PassedSurvey));
-        if (_list.Count == 0)
+
+        if (_studentsForDistribution.Count == 0)
         {
             controller.State = new StateIntoGroupMenu();
             result = TeacherMessageGenerator.NotEnoughStudents;
@@ -27,25 +29,26 @@ public class StateInitialiseTeamBuilder : IState
                 case UpdateType.Message:
                     switch (update.Message.Text)
                     {
-                        case "ПЕРЕСОБРАТЬ":
-                            TeamBuilder teamBuilder = new TeamBuilder(_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId),
-                                controller.CurrentNumberOfTeamMembers);
-                            teamBuilder.TeamBuild();
-                            string textMessage = StringBuilder(teamBuilder.TeamList);
-                            controller.PreliminaryTeamsList = teamBuilder.TeamList;
-                            controller.State = new StateWaitForConfirmation();
-                            result = TeacherMessageGenerator.StringToBot(textMessage);
-                            break;
+                        //case "ПЕРЕСОБРАТЬ":
+                        //    TeamBuilder teamBuilder = new TeamBuilder(_studentsForDistribution, controller.CurrentNumberOfTeamMembers);
+                        //    teamBuilder.TeamBuild();
+                        //    string textMessage = StringBuilder(teamBuilder.TeamList);
+                        //    controller.PreliminaryTeamsList = teamBuilder.TeamList;
+                        //    controller.State = new StateWaitForConfirmation();
+                        //    result = TeacherMessageGenerator.StringToBot(textMessage);
+                        //    break;
 
                         default:
-                            if (ArrayCreator(update).Length != 0)
+                            if (ListOfTeamMaxTeamMembersCreator(update).Count != 0 
+                                && ListOfTeamMaxTeamMembersCreator(update).Count <= _studentsForDistribution.Count
+                                && ListOfTeamMaxTeamMembersCreator(update).Sum() > _studentsForDistribution.Count)
                             {
-                                TeamBuilder tb = new TeamBuilder(_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId),
-                                    ArrayCreator(update));
-                                tb.TeamBuild();
-                                string text = StringBuilder(tb.TeamList);
-                                controller.CurrentNumberOfTeamMembers = ArrayCreator(update);
-                                controller.PreliminaryTeamsList = tb.TeamList;
+                                TeamBuilder builder = new TeamBuilder(_studentsForDistribution, ListOfTeamMaxTeamMembersCreator(update));
+                                builder.TeamBuild();
+
+                                string text = StringBuilder(builder.TeamList);
+                                controller.CurrentNumberOfTeamMembers = ListOfTeamMaxTeamMembersCreator(update);
+                                controller.PreliminaryTeamsList = builder.TeamList;
                                 controller.State = new StateWaitForConfirmation();
                                 result = TeacherMessageGenerator.StringToBot(text);
                             }
@@ -61,25 +64,25 @@ public class StateInitialiseTeamBuilder : IState
         return result;
     }
 
-    private int[] ArrayCreator(Update update)
+    private List<int> ListOfTeamMaxTeamMembersCreator(Update update)
     {
-        string[] text = update.Message.Text.Split(" ").ToArray();
-        List<int> tmp = new List<int>();
+        List<string> text = update.Message.Text.Split(" ").ToList();
+        List<int> result = new List<int>();
+
         foreach (var element in text)
         {
             if (IsDigital(element))
             {
-                tmp.Add(Convert.ToInt32(element));
+                result.Add(Convert.ToInt32(element));
             }
         }
-        int[] result = tmp.ToArray();
         return result;
     }
-    private bool IsDigital(string text)
+    private bool IsDigital(string line)
     {
-        for (int i = 0; i < text.Length; i++)
+        for (int i = 0; i < line.Length; i++)
         {
-            if (!char.IsDigit(text[i]))
+            if (!char.IsDigit(line[i]))
             {
                 return false;
             }

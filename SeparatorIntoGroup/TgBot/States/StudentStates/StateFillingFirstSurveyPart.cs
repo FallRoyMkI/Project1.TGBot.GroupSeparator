@@ -74,7 +74,7 @@ namespace SeparatorIntoGroup.TgBot.States.StudentStates
                                 case "done":
                                     BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
                                     result = StudentMessageGenerator.SelectWishStudents;
-                                    FillStudentQuestionareInfo(update);
+                                    FillStudentSurvayInfo(update);
                                     controller.State = new StateFillingSecondSurveyPart();
                                     break;
 
@@ -100,7 +100,7 @@ namespace SeparatorIntoGroup.TgBot.States.StudentStates
             return result;
         }
 
-        private void FillStudentQuestionareInfo(Update update)
+        private void FillStudentSurvayInfo(Update update)
         {
             List<TimeDictionaryKeys> days = new List<TimeDictionaryKeys>();
             foreach (var pair in _dayList)

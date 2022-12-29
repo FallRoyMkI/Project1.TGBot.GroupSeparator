@@ -26,6 +26,16 @@ public class Questionnaire
 
     public void QuestionAboutFreeTime(List<TimeDictionaryKeys>  keys, List<TimeDictionaryValues> values)
     {
+        StudentFreeTime = new Dictionary<TimeDictionaryKeys, List<TimeDictionaryValues>>()
+        {
+            { TimeDictionaryKeys.Понедельник, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Вторник, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Среда, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Четверг, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Пятница, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Суббота, new List<TimeDictionaryValues>() },
+            { TimeDictionaryKeys.Воскресенье, new List<TimeDictionaryValues>() }
+        };
         foreach (var key in keys)
         {
             StudentFreeTime[key].AddRange(values);

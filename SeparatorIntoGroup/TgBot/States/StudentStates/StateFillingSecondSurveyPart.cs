@@ -84,6 +84,7 @@ public class StateFillingSecondSurveyPart : IState
     {
         long groupId = _projectCore.Students.Find(x => x.Id == update.Message.Chat.Id).GroupId;
 
+        _projectCore.Students.Find(x => x.Id == update.Message.Chat.Id).Status = StatusType.PassedSurvey;
         _projectCore.Groups.Find(x => x.Id == groupId).StudentsInGroup
             .Find(x => x.Id == update.Message.Chat.Id).Status = StatusType.PassedSurvey;
         _projectCore.SaveAll();

@@ -11,7 +11,7 @@ namespace SeparatorIntoGroup
         public long Id { get; set; }
         public IState State { get; set; }
         public long CurrentGroupId { get; set; }
-        public int[] CurrentNumberOfTeamMembers {get; set; }
+        public List<int> CurrentNumberOfTeamMembers {get; set; }
         public List<List<Student>> PreliminaryTeamsList { get; set; }
 
         public MemberController(long id)

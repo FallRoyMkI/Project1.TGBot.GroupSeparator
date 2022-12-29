@@ -101,37 +101,43 @@ namespace SeparatorIntoGroup
 
         private void ActiveUsersAuthorization(Update update, long id, string tmpUserName)
         {
-            if (_projectCore.Teachers.Contains(_projectCore.Teachers.Find(x => x.Id == id)))
+            switch (update.Type)
             {
-                Console.WriteLine($"Авторизован преподаватель: {id} {tmpUserName}");
-                if (!_tmpUser.IsContais(id))
-                {
-                    _tmpUser.AddTeacher(id);
-                }
-            }
-            else if (!_projectCore.Students.Contains(_projectCore.Students.Find(x => x.Id == id)))
-            {
-                Console.WriteLine($"Авторизован студент c добавлением в Storage: {tmpUserName}. Id: {id}");
-                if (update.Message.Chat.Username != null)
-                {
-                    _teacher.CreateNewStudent(id, tmpUserName, update.Message.Chat.Username);
-                }
-                else
-                {
-                    _teacher.CreateNewStudent(id, tmpUserName, "NOINFO");
-                }
+                case UpdateType.Message:
+                    if (_projectCore.Teachers.Contains(_projectCore.Teachers.Find(x => x.Id == id)))
+                    {
+                        Console.WriteLine($"Авторизован преподаватель: {id} {tmpUserName}");
+                        if (!_tmpUser.IsContais(id))
+                        {
+                            _tmpUser.AddTeacher(id);
+                        }
+                    }
+                    else if (!_projectCore.Students.Contains(_projectCore.Students.Find(x => x.Id == id)))
+                    {
+                        Console.WriteLine($"Авторизован студент c добавлением в Storage: {tmpUserName}. Id: {id}");
+                        if (update.Message.Chat.Username != null)
+                        {
+                            _teacher.CreateNewStudent(id, tmpUserName, update.Message.Chat.Username);
+                        }
+                        else
+                        {
+                            _teacher.CreateNewStudent(id, tmpUserName, "NOINFO");
+                        }
 
-                _tmpUser.AddUsers(id);
-                _bot.SendTextMessageAsync(id, "Вы авторизованы как студент");
+                        _tmpUser.AddUsers(id);
+                        _bot.SendTextMessageAsync(id, "Вы авторизованы как студент");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Авторизован студент: {tmpUserName}. Id: {id}");
+                        if (!_tmpUser.IsContais(id))
+                        {
+                            _tmpUser.AddUsers(id);
+                        }
+                    }
+                    break;
             }
-            else
-            {
-                Console.WriteLine($"Авторизован студент: {tmpUserName}. Id: {id}");
-                if (!_tmpUser.IsContais(id))
-                {
-                    _tmpUser.AddUsers(id);
-                }
-            }
+            
         }
 
 

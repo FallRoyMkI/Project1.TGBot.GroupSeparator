@@ -35,12 +35,16 @@ namespace SeparatorIntoGroup.TgBot.States.StudentStates
                             break;
                     }
                     break;
-                default:
+                case UpdateType.Message:
                     if (update.Message.Text.ToUpper() != "/START")
                     {
                         BotManager.DeleteActualMessage(update);
                         result = StudentMessageGenerator.StubMessage;
                     }
+                    break;
+                default:
+                    BotManager.DeleteActualMessage(update);
+                    result = StudentMessageGenerator.StubMessage;
                     break;
             }
             return result;

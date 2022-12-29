@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Telegram.Bot.Types.Enums;
+﻿using SeparatorIntoGroup.Options;
 using Telegram.Bot.Types;
-using SeparatorIntoGroup.Options;
-using Telegram.Bot;
-using Microsoft.VisualBasic;
+using Telegram.Bot.Types.Enums;
 
 namespace SeparatorIntoGroup.TgBot.States.StudentStates
 {
@@ -41,6 +34,7 @@ namespace SeparatorIntoGroup.TgBot.States.StudentStates
                             result = StudentMessageGenerator.StudentStatusMessage(update, status);
                             break;
                     }
+
                     break;
                 default:
                     if (update.Message.Text.ToUpper() != "НА ДАННЫЙ МОМЕНТ ВЫ НАХОДИТЕСЬ В ГРУППОВОМ МЕНЮ:)" && update.Message.Text.ToUpper() != "/START")
@@ -48,6 +42,7 @@ namespace SeparatorIntoGroup.TgBot.States.StudentStates
                         BotManager.DeleteActualMessage(update);
                         result = StudentMessageGenerator.StubMessage;
                     }
+                    
                     break;
             }
             return result;
