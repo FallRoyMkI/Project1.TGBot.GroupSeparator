@@ -43,7 +43,7 @@ namespace SeparatorIntoGroup.TgBot.States.StudentStates
                     }
                     break;
                 default:
-                    if (update.Message.Text != "На данный момент вы находитесь в групповом меню:)")
+                    if (update.Message.Text.ToUpper() != "НА ДАННЫЙ МОМЕНТ ВЫ НАХОДИТЕСЬ В ГРУППОВОМ МЕНЮ:)" && update.Message.Text.ToUpper() != "/START")
                     {
                         BotManager.DeleteActualMessage(update);
                         result = StudentMessageGenerator.StubMessage;
