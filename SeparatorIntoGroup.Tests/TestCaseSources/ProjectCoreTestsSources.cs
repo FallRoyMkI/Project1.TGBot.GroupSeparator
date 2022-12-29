@@ -32,25 +32,25 @@ public class ProjectCoreTestsSources : IEnumerable
 
         yield return new Object[] { teachers, students, groups };
 
-        groups[1].AddStudentToGroup(students[0]);
-        groups[1].AddStudentToGroup(students[1]);
-        groups[1].AddStudentToGroup(students[2]);
-        groups[1].AddStudentToGroup(students[3]);
-        groups[1].CreateNewTeamInGroup(0,"TestTeam");
+        groups[1].AddStudent(students[0]);
+        groups[1].AddStudent(students[1]);
+        groups[1].AddStudent(students[2]);
+        groups[1].AddStudent(students[3]);
+        groups[1].CreateNewTeam(0,"TestTeam");
         groups[1].AddStudentToTeam(groups[1].TeamsInGroup[0], students[0]);
         groups[1].AddStudentToTeam(groups[1].TeamsInGroup[0], students[1]);
-        groups[1].CreateNewTeamInGroup(1,"AdminTeam");
+        groups[1].CreateNewTeam(1,"AdminTeam");
         groups[1].AddStudentToTeam(groups[1].TeamsInGroup[1], students[3]);
 
         yield return new Object[] { teachers, students, groups };
 
-        groups[0].AddStudentToGroup(students[4]);
-        groups[0].AddStudentToGroup(students[5]);
-        groups[0].CreateNewTeamInGroup(2, "Test");
+        groups[0].AddStudent(students[4]);
+        groups[0].AddStudent(students[5]);
+        groups[0].CreateNewTeam(2, "Test");
         groups[0].AddStudentToTeam(groups[0].TeamsInGroup[0], students[4]);
         groups[0].AddStudentToTeam(groups[0].TeamsInGroup[0], students[5]);
         groups[1].RemoveStudentFromTeam(groups[1].TeamsInGroup[0], groups[1].StudentsInGroup[1]);
-        groups[0].RemoveStudentFromGroup(students[5]);
+        groups[0].RemoveStudent(students[5]);
 
         yield return new Object[] { teachers, students, groups };
     }

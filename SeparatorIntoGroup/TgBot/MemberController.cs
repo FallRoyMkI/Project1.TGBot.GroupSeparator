@@ -10,9 +10,9 @@ namespace SeparatorIntoGroup
         private ProjectCore _projectCore = ProjectCore.GetProjectCore();
         public long Id { get; set; }
         public IState State { get; set; }
-        public long ActualGroupId { get; set; }
-        public int[] ActualTeams {get; set; }
-        public List<List<Student>> ActualTeamList { get; set; }
+        public long CurrentGroupId { get; set; }
+        public int[] CurrentNumberOfTeamMembers {get; set; }
+        public List<List<Student>> PreliminaryTeamsList { get; set; }
 
         public MemberController(long id)
         {

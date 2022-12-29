@@ -11,5 +11,7 @@ namespace SeparatorIntoGroup
     {
         public string Text { get; set; }
         public InlineKeyboardMarkup Keyboard { get; set; }
+
+        public bool IsNeedToBeEdited { get; set; }
     }
 }

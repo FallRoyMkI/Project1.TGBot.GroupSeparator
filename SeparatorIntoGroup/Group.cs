@@ -20,13 +20,13 @@ public class Group
         TeamsInGroup = new List<Team>();
     }
 
-    public void AddStudentToGroup(Student student)
+    public void AddStudent(Student student)
     {
         StudentsInGroup.Add(student);
         student.Status = StatusType.InGroup;
         student.GroupId = Id;
     }
-    public void RemoveStudentFromGroup(Student student)
+    public void RemoveStudent(Student student)
     {
         if (StudentsInGroup.Contains(student))
         {
@@ -40,30 +40,30 @@ public class Group
             student.GroupId = -1;
         }
     }
-    public void ClearGroup()
+    public void DeleteGroup()
     {
         RemoveAllTeamsFromGroup();
         RemoveAllStudentsFromGroup();
     }
 
-    public void CreateNewTeamInGroup(int id, string teamName)
+    public void CreateNewTeam(int id, string teamName)
     {
         Team team = new Team(id, teamName);
         TeamsInGroup.Add(team);
     }
     public void AddStudentToTeam(Team team, Student student)
     {
-        team.AddStudentToTeam(student);
+        team.AddStudent(student);
     }
     public void RemoveStudentFromTeam(Team team, Student student)
     {
-        team.RemoveStudentFromTeam(student);
+        team.RemoveStudent(student);
     }
     public void DeleteTeamFromGroup(Team team)
     {
         if (TeamsInGroup.Contains(team))
         {
-            team.RemoveAllStudentsFromTeam();
+            team.RemoveAllStudents();
             TeamsInGroup.Remove(team);
         }
     }
@@ -73,7 +73,7 @@ public class Group
     {
         foreach (var team in TeamsInGroup)
         {
-            team.RemoveAllStudentsFromTeam();
+            team.RemoveAllStudents();
         }
 
         TeamsInGroup.Clear();

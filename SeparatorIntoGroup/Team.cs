@@ -1,4 +1,5 @@
 ﻿using SeparatorIntoGroup.Options;
+using System.Linq;
 
 namespace SeparatorIntoGroup;
 
@@ -15,14 +16,14 @@ public class Team
         StudentsInTeam = new List<Student>();
     }
 
-    public void AddStudentToTeam(Student student)
+    public void AddStudent(Student student)
     {
         StudentsInTeam.Add(student);
         student.Status = StatusType.InTeam;
         student.TeamId = Id;
     }
 
-    public void RemoveStudentFromTeam(Student student)
+    public void RemoveStudent(Student student)
     {
         if (StudentsInTeam.Contains(student))
         {
@@ -32,7 +33,7 @@ public class Team
         }
     }
 
-    public void RemoveAllStudentsFromTeam()
+    public void RemoveAllStudents()
     {
         foreach (var student in StudentsInTeam)
         {
@@ -45,6 +46,7 @@ public class Team
 
     public override bool Equals(object? obj)
     {
+
         if (obj is Team)
         {
             List<Student> students = ((Team)obj).StudentsInTeam;

@@ -43,7 +43,7 @@ namespace SeparatorIntoGroup.Tests
 
             List<Student> actualStudentsInTeam = _team.StudentsInTeam;
 
-            _team.AddStudentToTeam(student);
+            _team.AddStudent(student);
 
             CollectionAssert.AreEqual(expectedStudentsInTeam, actualStudentsInTeam);
             Assert.AreEqual(expectedStudent, actualStudent);
@@ -74,7 +74,7 @@ namespace SeparatorIntoGroup.Tests
 
             List<Student> actualStudentsInTeam = _team.StudentsInTeam;
             
-            _team.RemoveStudentFromTeam(student);
+            _team.RemoveStudent(student);
 
             CollectionAssert.AreEqual(expectedStudentsInTeam, actualStudentsInTeam);
             Assert.AreEqual(expectedStudent, actualStudent);
@@ -97,7 +97,7 @@ namespace SeparatorIntoGroup.Tests
             List<Student> actualStudents = new List<Student>();
             actualStudents.AddRange(_team.StudentsInTeam);
 
-            _team.RemoveAllStudentsFromTeam();
+            _team.RemoveAllStudents();
 
             List<Student> expectedStudentsInTeam = new List<Student>();
             List<Student> actualStudentsInTeam = _team.StudentsInTeam;

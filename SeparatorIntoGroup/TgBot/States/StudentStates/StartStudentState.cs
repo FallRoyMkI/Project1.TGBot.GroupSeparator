@@ -15,24 +15,31 @@ namespace SeparatorIntoGroup.TgBot.States.StudentStates
         private ProjectCore _projectCore = ProjectCore.GetProjectCore();
         public MessageModel HandleUpdate(Update update, MemberController controller)
         {
+            
             MessageModel result = StudentMessageGenerator.StartMenu;
-
             switch (update.Type)
             {
                 case UpdateType.CallbackQuery:
                     switch (update.CallbackQuery.Data)
                     {
                         case "joinGroup":
-                            BotManager.DeleteOldReplyMarkup(update);
-                            controller.State = new StateJoinToGroup();
-                            result = StudentMessageGenerator.GroupAuthorization;
+                            BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
+                            controller.State = new TryingToJoinAGroupState();
+                            result = StudentMessageGenerator.AuthorizationInGroup;
                             break;
 
                         case "status":
-                            BotManager.DeleteOldReplyMarkup(update);
+                            BotManager.DeleteOldMessageByCallbackQuery(update);
                             StatusType status = _projectCore.Students.Find(x => x.Id == update.CallbackQuery.From.Id).Status;
                             result = StudentMessageGenerator.StudentStatusMessage(update, status);
                             break;
+                    }
+                    break;
+                default:
+                    if (update.Message.Text.ToUpper() != "/START")
+                    {
+                        BotManager.DeleteActualMessage(update);
+                        result = StudentMessageGenerator.StubMessage;
                     }
                     break;
             }

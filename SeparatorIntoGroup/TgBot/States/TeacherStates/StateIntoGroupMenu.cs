@@ -16,25 +16,25 @@ public class StateIntoGroupMenu : IState
                 switch (update.CallbackQuery.Data)
                 {
                     case "studentList":
-                        BotManager.DeleteOldReplyMarkup(update);
-                        string groupInfo = StringBuilder(update, controller.ActualGroupId);
+                        BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
+                        string groupInfo = StringBuilder(update, controller.CurrentGroupId);
                         result = TeacherMessageGenerator.StringToBot(update,groupInfo);
                         break;
 
                     case "deleteStudent":
-                        BotManager.DeleteOldReplyMarkup(update);
+                        BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
                         controller.State = new StateDeletingStudent();
                         result = TeacherMessageGenerator.DeleteStudent;
                         break;
 
                     case "createTeams":
-                        BotManager.DeleteOldReplyMarkup(update);
+                        BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
                         controller.State = new StateInitialiseTeamBuilder();
                         result = TeacherMessageGenerator.CreateTeams;
                         break;
 
                     case "deleteGroup":
-                        BotManager.DeleteOldReplyMarkup(update);
+                        BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
                         controller.State = new StateConfirmationDeletingGroup();
                         result =TeacherMessageGenerator.ConfirmDeleting;
                         break;

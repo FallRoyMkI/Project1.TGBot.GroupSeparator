@@ -23,13 +23,10 @@ namespace SeparatorIntoGroup
 
             var cts = new CancellationTokenSource();
             var cancellationToken = cts.Token;
-
             var receiverOptions = new ReceiverOptions
             {
                 AllowedUpdates = { },
-                //Limit = (1),
                 ThrowPendingUpdates = true
-
             };
 
             _bot.StartReceiving(
@@ -54,16 +51,26 @@ namespace SeparatorIntoGroup
             Console.WriteLine("Есть контакт!");
             Console.WriteLine();
 
-            UsersAvtorisation(update, id, tmpUserName);
+            ActiveUsersAuthorization(update, id, tmpUserName);
 
             MessageModel message = _tmpUser[id].GetAnswer(update);
 
-            await _bot.SendTextMessageAsync(id, message.Text, replyMarkup: message.Keyboard);
+            if (message.Text != "STUBMESSAGE!!!")
+            {
+                if (!message.IsNeedToBeEdited)
+                {
+                    await _bot.SendTextMessageAsync(id, message.Text, replyMarkup: message.Keyboard);
+                }
+                else
+                {
+                    await _bot.EditMessageTextAsync(id, update.CallbackQuery.Message.MessageId, message.Text, replyMarkup: message.Keyboard);
+                }
+            }
         }
 
         public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
-            Console.WriteLine("Что-то пошло не так");
+            Console.WriteLine($"Что-то пошло не так {exception.Message}");
         }
 
         private long GetUserId(Update update)
@@ -75,7 +82,7 @@ namespace SeparatorIntoGroup
                 case UpdateType.CallbackQuery:
                     return update.CallbackQuery.From.Id;
                 default:
-                    throw new Exception();
+                    throw new Exception("В ИЗВЕСТНОЕ ВРЕМЯ, ИЗВЕСТНАЯ ЛИЧНОСТЬ, ОТПРАВИЛА НЕИЗВЕСТНЫЙ ТИП АПДЕЙТА");
             }
         }
 
@@ -88,15 +95,15 @@ namespace SeparatorIntoGroup
                 case UpdateType.CallbackQuery:
                     return update.CallbackQuery.From.FirstName;
                 default:
-                    throw new Exception();
+                    throw new Exception("В ИЗВЕСТНОЕ ВРЕМЯ, ИЗВЕСТНАЯ ЛИЧНОСТЬ, ОТПРАВИЛА НЕИЗВЕСТНЫЙ ТИП АПДЕЙТА");
             }
         }
 
-        private void UsersAvtorisation(Update update, long id, string tmpUserName)
+        private void ActiveUsersAuthorization(Update update, long id, string tmpUserName)
         {
             if (_projectCore.Teachers.Contains(_projectCore.Teachers.Find(x => x.Id == id)))
             {
-                Console.WriteLine($"авторизован преподаватель: {tmpUserName}");
+                Console.WriteLine($"Авторизован преподаватель: {id} {tmpUserName}");
                 if (!_tmpUser.IsContais(id))
                 {
                     _tmpUser.AddTeacher(id);
@@ -104,21 +111,22 @@ namespace SeparatorIntoGroup
             }
             else if (!_projectCore.Students.Contains(_projectCore.Students.Find(x => x.Id == id)))
             {
-                Console.WriteLine($"авторизован студент c добавлением в Storage: {tmpUserName}. Id: {id}");
-                if (update.Message != null)
+                Console.WriteLine($"Авторизован студент c добавлением в Storage: {tmpUserName}. Id: {id}");
+                if (update.Message.Chat.Username != null)
                 {
                     _teacher.CreateNewStudent(id, tmpUserName, update.Message.Chat.Username);
                 }
                 else
                 {
-                    _teacher.CreateNewStudent(id, tmpUserName, "@NOINFO");
+                    _teacher.CreateNewStudent(id, tmpUserName, "NOINFO");
                 }
+
                 _tmpUser.AddUsers(id);
                 _bot.SendTextMessageAsync(id, "Вы авторизованы как студент");
             }
             else
             {
-                Console.WriteLine($"авторизован студент: {tmpUserName}. Id: {id}");
+                Console.WriteLine($"Авторизован студент: {tmpUserName}. Id: {id}");
                 if (!_tmpUser.IsContais(id))
                 {
                     _tmpUser.AddUsers(id);
@@ -126,23 +134,23 @@ namespace SeparatorIntoGroup
             }
         }
 
-        private IReplyMarkup? GetButtons()
-        {
-            return new ReplyKeyboardMarkup(new List<List<KeyboardButton>>
-                {
-                    new List<KeyboardButton> { new KeyboardButton("Test1"), new KeyboardButton("Test2") },
-                    new List<KeyboardButton> { new KeyboardButton("Test3"), new KeyboardButton("Test4") }
-                }
-            );
-        }
 
-        public static void DeleteOldReplyMarkup(Update update)
+
+        public static void DeleteOldReplyMarkupForCallbackQuery(Update update)
         {
            _bot.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, update.CallbackQuery.Message.Text, replyMarkup: null);
         }
         public static void DeleteOldReplyForMessage(Update update)
         {
             _bot.EditMessageTextAsync(update.Message.Chat.Id, update.Message.MessageId, update.Message.Text, replyMarkup: null);
+        }
+        public static void DeleteActualMessage(Update update)
+        {
+            _bot.DeleteMessageAsync(update.Message.Chat.Id, update.Message.MessageId);
+        }
+        public static void DeleteOldMessageByCallbackQuery(Update update)
+        {
+            _bot.DeleteMessageAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId);
         }
     }
 }

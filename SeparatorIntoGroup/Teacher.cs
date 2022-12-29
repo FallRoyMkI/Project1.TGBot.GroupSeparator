@@ -4,7 +4,7 @@ namespace SeparatorIntoGroup;
 
 public class Teacher : AbstractPersons
 {
-    private ProjectCore _projectCore;
+    private ProjectCore _projectCore = ProjectCore.GetProjectCore();
 
     public Teacher(long id, string personName, string accountName)
     {
@@ -12,7 +12,6 @@ public class Teacher : AbstractPersons
         PersonName = personName;
         AccountName = accountName;
         Status = StatusType.IsTeacher;
-        _projectCore = ProjectCore.GetProjectCore();
     }
 
     public void CreateNewStudent(long id, string name, string userName)
@@ -35,26 +34,25 @@ public class Teacher : AbstractPersons
     }
     public void AddStudentToGroup(Group group, Student student)
     {
-        group.AddStudentToGroup(student);
+        group.AddStudent(student);
         _projectCore.SaveAll();
     }
     public void RemoveStudentFromGroup(Group group, Student student)
     {
-        group.RemoveStudentFromGroup(student);
+        group.RemoveStudent(student);
         _projectCore.SaveAll();
     }
-
     public void DeleteGroup(Group group)
     {
-        group.ClearGroup();
+        group.DeleteGroup();
         _projectCore.Groups.Remove(group);
         _projectCore.SaveAll();
     }
 
 
-    public void CreateNewTeamInGroup(Group group, int id, string teamName)
+    public void CreateNewTeam(Group group, int id, string name)
     {
-        group.CreateNewTeamInGroup(id,teamName);
+        group.CreateNewTeam(id,name);
         _projectCore.SaveAll();
     }
     public void AddStudentToTeam(Group group, Team team, Student student)

@@ -32,7 +32,7 @@ namespace SeparatorIntoGroup.Tests
             _pc.Students.Add(new Student(3, "Руслан", "@russ"));
 
             _group.TeamsInGroup.Add(new Team(0,"TestTeam"));
-            _group.TeamsInGroup[0].AddStudentToTeam(_group.StudentsInGroup[1]);
+            _group.TeamsInGroup[0].AddStudent(_group.StudentsInGroup[1]);
         }
 
         [TestCaseSource(typeof(StudentsForGroupTestsSources))]
@@ -52,7 +52,7 @@ namespace SeparatorIntoGroup.Tests
 
             List<Student> actualStudentsInGroup = _group.StudentsInGroup;
 
-            _group.AddStudentToGroup(student);
+            _group.AddStudent(student);
 
             CollectionAssert.AreEqual(expectedStudentsInGroup, actualStudentsInGroup);
             Assert.AreEqual(expectedStudent, actualStudent);
@@ -83,7 +83,7 @@ namespace SeparatorIntoGroup.Tests
 
             List<Student> actualStudentsInGroup = _group.StudentsInGroup;
             
-            _group.RemoveStudentFromGroup(student);
+            _group.RemoveStudent(student);
 
             CollectionAssert.AreEqual(expectedStudentsInGroup, actualStudentsInGroup);
             Assert.AreEqual(expectedStudent, actualStudent);
@@ -114,7 +114,7 @@ namespace SeparatorIntoGroup.Tests
 
             List<Student> actualStudentsInGroup = _group.StudentsInGroup;
 
-            _group.RemoveStudentFromGroup(student);
+            _group.RemoveStudent(student);
 
             CollectionAssert.AreEqual(expectedStudentsInGroup, actualStudentsInGroup);
             Assert.AreEqual(expectedStudent, actualStudent);
@@ -137,7 +137,7 @@ namespace SeparatorIntoGroup.Tests
             List<Student> actualStudents = new List<Student>();
             actualStudents.AddRange(_group.StudentsInGroup);
 
-            _group.ClearGroup();
+            _group.DeleteGroup();
 
             List<Student> expectedStudentsInGroup = new List<Student>();
             List<Student> actualStudentsInGroup = _group.StudentsInGroup;
@@ -157,7 +157,7 @@ namespace SeparatorIntoGroup.Tests
             expectedTeams.AddRange(_group.TeamsInGroup);
             expectedTeams.Add(new Team(id,teamName));
 
-            _group.CreateNewTeamInGroup(id,teamName);
+            _group.CreateNewTeam(id,teamName);
             List<Team> actualTeams = _group.TeamsInGroup;
 
             CollectionAssert.AreEqual(expectedTeams, actualTeams);

@@ -105,5 +105,7 @@ public class ProjectCoreTests
         _pc.Teachers.Clear();
         _pc.Students.Clear();
         _pc.Groups.Clear();
+        Path = "../../../Storage.txt";
+        _pc.SetPathForTests(Path);
     }
 }

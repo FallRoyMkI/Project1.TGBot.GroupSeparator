@@ -42,7 +42,7 @@ public class AddStudentToTeamTestsSources : IEnumerable
     public IEnumerator GetEnumerator()
     {
         Team team = new Team(0, "TestTeam");
-        team.AddStudentToTeam(new Student(99, "Гектор", "@gek"));
+        team.AddStudent(new Student(99, "Гектор", "@gek"));
         Student student = new Student(13, "Test", "@test");
         
         yield return new Object[] { team, student };
@@ -61,9 +61,9 @@ public class RemoveStudentFromTeamsInGroupTestsSources : IEnumerable
     {
         Team team = new Team(0, "TestTeam");
         Student StudentForRemoving = new Student(13, "Cringe", "@Cig");
-        team.AddStudentToTeam(new Student(99, "Гектор", "@gek"));
-        team.AddStudentToTeam(StudentForRemoving);
-        team.AddStudentToTeam(new Student(100, "Рузвальд", "@ruzz"));
+        team.AddStudent(new Student(99, "Гектор", "@gek"));
+        team.AddStudent(StudentForRemoving);
+        team.AddStudent(new Student(100, "Рузвальд", "@ruzz"));
 
         yield return new Object[] { team, StudentForRemoving };
 
@@ -86,13 +86,13 @@ public class TeamsForRemoveTestsSources : IEnumerable
     public IEnumerator GetEnumerator()
     {
         Team team = new Team(0, "TestTeam");
-        team.AddStudentToTeam(new Student(1, "Рузвальд", "@ruzz"));
+        team.AddStudent(new Student(1, "Рузвальд", "@ruzz"));
 
         yield return new Object[] { team };
 
          team = new Team(18, "");
-        team.AddStudentToTeam(new Student(99, "Гектор", "@gek"));
-        team.AddStudentToTeam(new Student(100, "Рузвальд", "@ruzz"));
+        team.AddStudent(new Student(99, "Гектор", "@gek"));
+        team.AddStudent(new Student(100, "Рузвальд", "@ruzz"));
 
         yield return new Object[] { team };
     }

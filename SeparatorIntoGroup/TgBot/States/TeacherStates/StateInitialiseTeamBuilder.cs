@@ -13,7 +13,7 @@ public class StateInitialiseTeamBuilder : IState
     public MessageModel HandleUpdate(Update update, MemberController controller)
     {
         MessageModel result = TeacherMessageGenerator.WrongInitialization;
-        _list.AddRange((_projectCore.Groups.Find(x => x.Id == controller.ActualGroupId).StudentsInGroup).
+        _list.AddRange((_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId).StudentsInGroup).
             FindAll(x => x.Status == StatusType.PassedSurvey));
         if (_list.Count == 0)
         {
@@ -28,11 +28,11 @@ public class StateInitialiseTeamBuilder : IState
                     switch (update.Message.Text)
                     {
                         case "ПЕРЕСОБРАТЬ":
-                            TeamBuilder teamBuilder = new TeamBuilder(_projectCore.Groups.Find(x => x.Id == controller.ActualGroupId),
-                                controller.ActualTeams);
+                            TeamBuilder teamBuilder = new TeamBuilder(_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId),
+                                controller.CurrentNumberOfTeamMembers);
                             teamBuilder.TeamBuild();
                             string textMessage = StringBuilder(teamBuilder.TeamList);
-                            controller.ActualTeamList = teamBuilder.TeamList;
+                            controller.PreliminaryTeamsList = teamBuilder.TeamList;
                             controller.State = new StateWaitForConfirmation();
                             result = TeacherMessageGenerator.StringToBot(textMessage);
                             break;
@@ -40,12 +40,12 @@ public class StateInitialiseTeamBuilder : IState
                         default:
                             if (ArrayCreator(update).Length != 0)
                             {
-                                TeamBuilder tb = new TeamBuilder(_projectCore.Groups.Find(x => x.Id == controller.ActualGroupId),
+                                TeamBuilder tb = new TeamBuilder(_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId),
                                     ArrayCreator(update));
                                 tb.TeamBuild();
                                 string text = StringBuilder(tb.TeamList);
-                                controller.ActualTeams = ArrayCreator(update);
-                                controller.ActualTeamList = tb.TeamList;
+                                controller.CurrentNumberOfTeamMembers = ArrayCreator(update);
+                                controller.PreliminaryTeamsList = tb.TeamList;
                                 controller.State = new StateWaitForConfirmation();
                                 result = TeacherMessageGenerator.StringToBot(text);
                             }

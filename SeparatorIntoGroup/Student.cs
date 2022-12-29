@@ -28,6 +28,6 @@ public class Student: AbstractPersons
                Status == student.Status &&
                GroupId == student.GroupId &&
                TeamId == student.TeamId &&
-               AnswersToQuestionnaire == student.AnswersToQuestionnaire;
+               AnswersToQuestionnaire.Equals(student.AnswersToQuestionnaire);
     }
 }

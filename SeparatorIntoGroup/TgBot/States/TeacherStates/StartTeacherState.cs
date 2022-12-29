@@ -19,19 +19,19 @@ public class StartTeacherState : IState
                 switch (update.CallbackQuery.Data)
                 {
                     case "createGroup":
-                        BotManager.DeleteOldReplyMarkup(update);
+                        BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
                         controller.State = new StateCreateGroup();
                         result = TeacherMessageGenerator.CreateGroupId;
                         break;
 
                     case "groupList":
-                        BotManager.DeleteOldReplyMarkup(update);
+                        BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
                         string groupInfo = StringBuilder(update);
                         result = TeacherMessageGenerator.StringToBot(update, groupInfo);
                         break;
 
                     case "goIntoGroup":
-                        BotManager.DeleteOldReplyMarkup(update);
+                        BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
                         controller.State = new StateGoIntoGroup();
                         result = TeacherMessageGenerator.GetGroupId;
                         break;

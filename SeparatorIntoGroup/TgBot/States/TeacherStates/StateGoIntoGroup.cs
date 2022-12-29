@@ -20,7 +20,7 @@ public class StateGoIntoGroup : IState
                     if (_projectCore.Groups.Contains(_projectCore.Groups.Find(x => x.Id == groupKey)))
                     {
                         controller.State = new StateIntoGroupMenu();
-                        controller.ActualGroupId = groupKey;
+                        controller.CurrentGroupId = groupKey;
                         result = TeacherMessageGenerator.GroupMenu;
                     }
                 }

@@ -28,8 +28,8 @@ public class TeacherTests
             new Group(0,"TestGroup")
         };
 
-        _pc.Groups[0].AddStudentToGroup(_pc.Students[0]);
-        _pc.Groups[0].CreateNewTeamInGroup(0,"TestTeam");
+        _pc.Groups[0].AddStudent(_pc.Students[0]);
+        _pc.Groups[0].CreateNewTeam(0,"TestTeam");
         _pc.Groups[0].AddStudentToTeam(_pc.Groups[0].TeamsInGroup[0], _pc.Groups[0].StudentsInGroup[0]);
 
         _teacher = new Teacher(0, "admin", "@admin");
@@ -40,7 +40,7 @@ public class TeacherTests
     {
         List<Student> expectedStudents = new List<Student>();
         expectedStudents.AddRange(_pc.Students);
-        expectedStudents.Add(new Student(id,name,userName));
+        expectedStudents.Add(new Student(id,name, "@"+userName));
         
         List<Student> actualStudents = _pc.Students;
 
@@ -141,7 +141,7 @@ public class TeacherTests
 
         List<Team> actualTeams = group.TeamsInGroup;
 
-        _teacher.CreateNewTeamInGroup(group,id,teamName);
+        _teacher.CreateNewTeam(group,id,teamName);
 
         CollectionAssert.AreEqual(expectedTeams, actualTeams);
     }
@@ -191,9 +191,11 @@ public class TeacherTests
     [TearDown]
     public void TearDown()
     {
+        File.Delete(Path);
         _pc.Students.Clear();
         _pc.Groups.Clear();
         _pc.Teachers.Clear();
-        File.Delete(Path);
+        Path = "../../../Storage.txt";
+        _pc.SetPathForTests(Path);
     }
 }

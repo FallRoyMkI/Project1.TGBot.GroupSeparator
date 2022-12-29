@@ -17,7 +17,7 @@ public class StateConfirmationDeletingGroup : IState
                 if ("ДА Я УВЕРЕН" == update.Message.Text.ToUpper())
                 {
                     _projectCore.Teachers[0]
-                        .DeleteGroup(_projectCore.Groups.Find(x => x.Id == controller.ActualGroupId));
+                        .DeleteGroup(_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId));
                     controller.State = new StartTeacherState();
                     result = TeacherMessageGenerator.SuccessfulGroupDeleting;
                 }

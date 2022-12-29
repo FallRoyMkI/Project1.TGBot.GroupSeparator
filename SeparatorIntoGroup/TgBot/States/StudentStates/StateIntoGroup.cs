@@ -23,24 +23,30 @@ namespace SeparatorIntoGroup.TgBot.States.StudentStates
                 case UpdateType.CallbackQuery:
                     switch (update.CallbackQuery.Data)
                     {
-                        case "goToQuestionnaire":
-                            BotManager.DeleteOldReplyMarkup(update);
-                            controller.State = new StateFillingQuestionsAboutTime();
+                        case "takeASurvey":
+                            BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
+                            controller.State = new StateFillingFirstSurveyPart();
                             result = StudentMessageGenerator.QuestionAboutFreeDays;
                             break;
 
                         case "groupMembers":
-                            BotManager.DeleteOldReplyMarkup(update);
-                            string text = StringBuilder(update);
-                            controller.State = new StateIntoGroup();
-                            result = StudentMessageGenerator.GroupMembers(update, text);
+                            BotManager.DeleteOldMessageByCallbackQuery(update);
+                            string groupMembers = StringBuilder(update);
+                            result = StudentMessageGenerator.GroupMembers(update, groupMembers);
                             break;
 
                         case "status":
-                            BotManager.DeleteOldReplyMarkup(update);
+                            BotManager.DeleteOldMessageByCallbackQuery(update);
                             StatusType status = _projectCore.Students.Find(x => x.Id == update.CallbackQuery.From.Id).Status;
                             result = StudentMessageGenerator.StudentStatusMessage(update, status);
                             break;
+                    }
+                    break;
+                default:
+                    if (update.Message.Text != "На данный момент вы находитесь в групповом меню:)")
+                    {
+                        BotManager.DeleteActualMessage(update);
+                        result = StudentMessageGenerator.StubMessage;
                     }
                     break;
             }
@@ -49,27 +55,25 @@ namespace SeparatorIntoGroup.TgBot.States.StudentStates
 
         public string StringBuilder(Update update)
         {
-            ProjectCore pc = ProjectCore.GetProjectCore();
             List<Student> students = new List<Student>();
+            long groupId = _projectCore.Students.Find(x => x.Id == update.CallbackQuery.Message.Chat.Id).GroupId;
 
-            long groupId = pc.Students.Find(x => x.Id == update.CallbackQuery.Message.Chat.Id).GroupId;
-
-            students.AddRange(pc.Students.FindAll(x => x.GroupId == groupId));
-            students.Remove(pc.Students.Find(x => x.Id == update.CallbackQuery.Message.Chat.Id));
-            string studentInfo = "";
+            students.AddRange(_projectCore.Students.FindAll(x => x.GroupId == groupId));
+            students.Remove(_projectCore.Students.Find(x => x.Id == update.CallbackQuery.Message.Chat.Id));
+            string groupMembers = "";
             if (students.Count > 0)
             {
                 for (int i = 0; i < students.Count; i++)
                 {
-                    studentInfo += $"{i + 1} {students[i].PersonName} {students[i].AccountName}" + Environment.NewLine;
+                    groupMembers += $"{i + 1} {students[i].PersonName} {students[i].AccountName}" + Environment.NewLine;
                 }
             }
             else
             {
-                studentInfo = "На данный момент в группе находитесь только вы";
+                groupMembers = "На данный момент в группе находитесь только вы";
             }
 
-            return studentInfo;
+            return groupMembers;
         }
     }
 }

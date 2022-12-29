@@ -12,13 +12,13 @@ public class TeamBuilder
     private List<int> _randomStudentIndexes = new List<int>();
     private IEnumerable<TimeDictionaryKeys> _timeDictionaryKeys= new []
     {
-        TimeDictionaryKeys.Monday,
-        TimeDictionaryKeys.Tuesday,
-        TimeDictionaryKeys.Wednesday,
-        TimeDictionaryKeys.Thursday,
-        TimeDictionaryKeys.Friday,
-        TimeDictionaryKeys.Saturday,
-        TimeDictionaryKeys.Sunday,
+        TimeDictionaryKeys.Понедельник,
+        TimeDictionaryKeys.Вторник,
+        TimeDictionaryKeys.Среда,
+        TimeDictionaryKeys.Четверг,
+        TimeDictionaryKeys.Пятница,
+        TimeDictionaryKeys.Суббота,
+        TimeDictionaryKeys.Воскресенье,
     };
 
     public TeamBuilder(Group group, int[] numberOfTeamMembers) // тут массив вида 3/3/3/3/2/2/5 по участникам команд
@@ -137,23 +137,23 @@ public class TeamBuilder
 
     private int WishListsComparison(Student firstStudent, Student secondStudent)
     {
-        if (firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent.AccountName) 
-            && secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent.AccountName)) return 50;
-        if (firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent.AccountName) 
-            && secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent.AccountName)) return -50;
+        if (firstStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(secondStudent.AccountName) 
+            && secondStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(firstStudent.AccountName)) return 50;
+        if (firstStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(secondStudent.AccountName) 
+            && secondStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(firstStudent.AccountName)) return -50;
 
-        if (!firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent.AccountName)
-            && !firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent.AccountName))
+        if (!firstStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(secondStudent.AccountName)
+            && !firstStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(secondStudent.AccountName))
         {
-            if (secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent.AccountName)) return 25;
-            if (secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent.AccountName)) return -25;
+            if (secondStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(firstStudent.AccountName)) return 25;
+            if (secondStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(firstStudent.AccountName)) return -25;
         }
 
-        if (!secondStudent.AnswersToQuestionnaire.WishStudents.Contains(firstStudent.AccountName) 
-            && !secondStudent.AnswersToQuestionnaire.NotWishStudents.Contains(firstStudent.AccountName))
+        if (!secondStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(firstStudent.AccountName) 
+            && !secondStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(firstStudent.AccountName))
         {
-            if (firstStudent.AnswersToQuestionnaire.WishStudents.Contains(secondStudent.AccountName)) return 25;
-            if (firstStudent.AnswersToQuestionnaire.NotWishStudents.Contains(secondStudent.AccountName)) return -25;
+            if (firstStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(secondStudent.AccountName)) return 25;
+            if (firstStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(secondStudent.AccountName)) return -25;
         }
 
         return 0;
