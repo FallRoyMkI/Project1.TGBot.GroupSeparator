@@ -127,7 +127,19 @@ namespace SeparatorIntoGroup
             return new MessageModel()
             {
                 Text = text,
-                Keyboard = null
+                Keyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            new InlineKeyboardButton("Пересоздать") { CallbackData = "rebuild" },
+                            new InlineKeyboardButton("Подтвердить") { CallbackData = "confirm" }
+                        },
+                        new[]
+                        {
+                            new InlineKeyboardButton("Назад") { CallbackData = "back" }
+                        }
+                    })
             };
 
         }
@@ -256,8 +268,15 @@ namespace SeparatorIntoGroup
             {
                 return new MessageModel()
                 {
-                    Text = "Пересборка началась",
-                    Keyboard = null,
+                    Text = "Нажмите для запуска.......",
+                    Keyboard = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                new InlineKeyboardButton("ЗАПУСК") {CallbackData = "initial"}
+                            },
+                        }),
                     IsNeedToBeEdited = false
                 };
             }

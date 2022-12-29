@@ -13,38 +13,52 @@ public class StateWaitForConfirmation : IState
 
         switch (update.Type)
         {
-            case UpdateType.Message:
-                if ("ПОДТВЕРДИТЬ" == update.Message.Text.ToUpper())
+            case UpdateType.CallbackQuery:
+                switch (update.CallbackQuery.Data)
                 {
-                    int id = Convert.ToInt32(controller.CurrentGroupId) + 10000;
-                    if (_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId).TeamsInGroup.Count != 0)
-                    {
-                        id = _projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId).
-                            TeamsInGroup[_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId).TeamsInGroup.Count-1].Id;
-                    }
-                    foreach (var team in controller.PreliminaryTeamsList)
-                    {
-                        _projectCore.Teachers[0].CreateNewTeam(_projectCore.Groups.Find(x=> x.Id == controller.CurrentGroupId),
-                            id,$"team№ {id}");
-                        foreach (var student in team)
+                    case "rebuild":
+                        BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
+                        controller.State = new StateInitialiseTeamBuilder();
+                        result = TeacherMessageGenerator.Rebuilder;
+
+                        break;
+                    case "confirm":
+                        BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
+                        int id = Convert.ToInt32(controller.CurrentGroupId) + 10000;
+                        if (_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId).TeamsInGroup.Count != 0)
                         {
-                            _projectCore.Teachers[0].AddStudentToTeam(_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId),
-                                _projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId).TeamsInGroup.Find(x=> x.Id == id), student);
+                            id = _projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId).
+                                TeamsInGroup[_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId).TeamsInGroup.Count - 1].Id + 1;
                         }
-                    }
-                    controller.State = new StateIntoGroupMenu();
-                    result = TeacherMessageGenerator.GroupMenu;
+                        foreach (var team in controller.PreliminaryTeamsList)
+                        {
+                            _projectCore.Teachers[0].CreateNewTeam(_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId),
+                                id, $"team№ {id}");
+                            foreach (var student in team)
+                            {
+                                _projectCore.Teachers[0].AddStudentToTeam(_projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId),
+                                    _projectCore.Groups.Find(x => x.Id == controller.CurrentGroupId).TeamsInGroup.Find(x => x.Id == id), student);
+                            }
+
+                        }
+                        controller.State = new StateIntoGroupMenu();
+                        result = TeacherMessageGenerator.GroupMenu;
+                        break;
+                    case "back":
+                        BotManager.DeleteOldReplyMarkupForCallbackQuery(update);
+                        controller.State = new StateIntoGroupMenu();
+                        result = TeacherMessageGenerator.GroupMenu;
+                        break;
                 }
-                if ("ПЕРЕСОБРАТЬ" == update.Message.Text.ToUpper())
+
+                break;
+            default:
+                if (update.Message.Text != null)
                 {
-                    controller.State = new StateInitialiseTeamBuilder();
-                    result = TeacherMessageGenerator.Rebuilder;
+                    BotManager.DeleteActualMessage(update);
+                    result = StudentMessageGenerator.StubMessage;
                 }
-                if ("НАЗАД" == update.Message.Text.ToUpper())
-                {
-                    controller.State = new StateIntoGroupMenu();
-                    result = TeacherMessageGenerator.GroupMenu;
-                }
+
                 break;
         }
 

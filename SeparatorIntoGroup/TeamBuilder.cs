@@ -140,23 +140,24 @@ public class TeamBuilder
 
     private int WishListsComparison(Student firstStudent, Student secondStudent)
     {
+        int value = 50;
         if (firstStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(secondStudent.AccountName)
-            && secondStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(firstStudent.AccountName)) return 50;
+            && secondStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(firstStudent.AccountName)) return value;
         if (firstStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(secondStudent.AccountName)
-            && secondStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(firstStudent.AccountName)) return -50;
+            && secondStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(firstStudent.AccountName)) return -value;
 
         if (!firstStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(secondStudent.AccountName)
             && !firstStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(secondStudent.AccountName))
         {
-            if (secondStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(firstStudent.AccountName)) return 25;
-            if (secondStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(firstStudent.AccountName)) return -25;
+            if (secondStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(firstStudent.AccountName)) return value/2;
+            if (secondStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(firstStudent.AccountName)) return -value/2;
         }
 
         if (!secondStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(firstStudent.AccountName)
             && !secondStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(firstStudent.AccountName))
         {
-            if (firstStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(secondStudent.AccountName)) return 25;
-            if (firstStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(secondStudent.AccountName)) return -25;
+            if (firstStudent.AnswersToQuestionnaire.PreferredTeammates.Contains(secondStudent.AccountName)) return value/2;
+            if (firstStudent.AnswersToQuestionnaire.NotPreferredTeammates.Contains(secondStudent.AccountName)) return -value/2;
         }
 
         return 0;
@@ -170,7 +171,7 @@ public class TeamBuilder
             {
                 if (secondStudent.AnswersToQuestionnaire.StudentFreeTime[key].Contains(freeTimeNode))
                 {
-                    value += 10;
+                    value += 20;
                 }
             }
         }

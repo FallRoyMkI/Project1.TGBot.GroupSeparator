@@ -37,12 +37,15 @@ namespace SeparatorIntoGroup.TgBot.States.StudentStates
 
                     break;
                 default:
-                    if (update.Message.Text.ToUpper() != "НА ДАННЫЙ МОМЕНТ ВЫ НАХОДИТЕСЬ В ГРУППОВОМ МЕНЮ:)" && update.Message.Text.ToUpper() != "/START")
+                    if (update.Message.Text != null)
                     {
-                        BotManager.DeleteActualMessage(update);
-                        result = StudentMessageGenerator.StubMessage;
+                        if (update.Message.Text.ToUpper() != "НА ДАННЫЙ МОМЕНТ ВЫ НАХОДИТЕСЬ В ГРУППОВОМ МЕНЮ:)" && update.Message.Text.ToUpper() != "/START")
+                        {
+                            BotManager.DeleteActualMessage(update);
+                            result = StudentMessageGenerator.StubMessage;
+                        }
                     }
-                    
+
                     break;
             }
             return result;

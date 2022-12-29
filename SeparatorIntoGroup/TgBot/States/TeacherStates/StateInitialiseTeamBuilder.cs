@@ -1,7 +1,6 @@
-﻿using Telegram.Bot.Types.Enums;
+﻿using SeparatorIntoGroup.Options;
 using Telegram.Bot.Types;
-using Microsoft.VisualBasic;
-using SeparatorIntoGroup.Options;
+using Telegram.Bot.Types.Enums;
 
 namespace SeparatorIntoGroup.TgBot.States.TeacherStates;
 
@@ -29,19 +28,19 @@ public class StateInitialiseTeamBuilder : IState
                 case UpdateType.Message:
                     switch (update.Message.Text)
                     {
-                        //case "ПЕРЕСОБРАТЬ":
-                        //    TeamBuilder teamBuilder = new TeamBuilder(_studentsForDistribution, controller.CurrentNumberOfTeamMembers);
-                        //    teamBuilder.TeamBuild();
-                        //    string textMessage = StringBuilder(teamBuilder.TeamList);
-                        //    controller.PreliminaryTeamsList = teamBuilder.TeamList;
-                        //    controller.State = new StateWaitForConfirmation();
-                        //    result = TeacherMessageGenerator.StringToBot(textMessage);
-                        //    break;
+                        case "ПЕРЕСОБРАТЬ":
+                            TeamBuilder teamBuilder = new TeamBuilder(_studentsForDistribution, controller.CurrentNumberOfTeamMembers);
+                            teamBuilder.TeamBuild();
+                            string textMessage = StringBuilder(teamBuilder.TeamList);
+                            controller.PreliminaryTeamsList = teamBuilder.TeamList;
+                            controller.State = new StateWaitForConfirmation();
+                            result = TeacherMessageGenerator.StringToBot(textMessage);
+                            break;
 
                         default:
-                            if (ListOfTeamMaxTeamMembersCreator(update).Count != 0 
+                            if (ListOfTeamMaxTeamMembersCreator(update).Count != 0
                                 && ListOfTeamMaxTeamMembersCreator(update).Count <= _studentsForDistribution.Count
-                                && ListOfTeamMaxTeamMembersCreator(update).Sum() > _studentsForDistribution.Count)
+                                && ListOfTeamMaxTeamMembersCreator(update).Sum() >= _studentsForDistribution.Count)
                             {
                                 TeamBuilder builder = new TeamBuilder(_studentsForDistribution, ListOfTeamMaxTeamMembersCreator(update));
                                 builder.TeamBuild();
@@ -55,11 +54,26 @@ public class StateInitialiseTeamBuilder : IState
 
                             break;
                     }
+                    break;
+                case UpdateType.CallbackQuery:
+                    switch (update.CallbackQuery.Data)
+                    {
+                        case "initial":
+                            TeamBuilder builder = new TeamBuilder(_studentsForDistribution, controller.CurrentNumberOfTeamMembers);
+                            builder.TeamBuild();
+                            string text = StringBuilder(builder.TeamList);
+                            controller.PreliminaryTeamsList = builder.TeamList;
+                            controller.State = new StateWaitForConfirmation();
+
+                            result = TeacherMessageGenerator.StringToBot(text);
+                            break;
+                    }
 
                     break;
+
             }
         }
-        
+
 
         return result;
     }
@@ -102,9 +116,6 @@ public class StateInitialiseTeamBuilder : IState
                 result += $"{student.Id} {student.PersonName}" + Environment.NewLine;
             }
         }
-        result += "Если Вас не устраивают собранные команды введите \"ПЕРЕСОБРАТЬ\"" + Environment.NewLine;
-        result += "Если Вас всё устраивает  введите \"ПОДТВЕРДИТЬ\"" + Environment.NewLine;
-        result += "Если хотите увидеть меню взаимодействия с группами введите \"НАЗАД\"" + Environment.NewLine;
         return result;
     }
 }

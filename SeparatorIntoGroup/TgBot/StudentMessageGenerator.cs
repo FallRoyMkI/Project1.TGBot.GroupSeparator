@@ -109,7 +109,7 @@ namespace SeparatorIntoGroup
                             new[]
                             {
                                 new InlineKeyboardButton("Воскресенье") { CallbackData = $"{6}"},
-                                new InlineKeyboardButton("Готово") { CallbackData = "done" }
+                                new InlineKeyboardButton($"Готово {Emoji._markExclamation}") { CallbackData = "done" }
 
                             },
                         }),
@@ -129,7 +129,7 @@ namespace SeparatorIntoGroup
             {
                 if (isSelected[(TimeDictionaryKeys)i] == true)
                 {
-                    keyboard[0].Add( new InlineKeyboardButton($"+ {((TimeDictionaryKeys) i).ToString()}") { CallbackData = $"{i}" } );
+                    keyboard[0].Add( new InlineKeyboardButton($"{Emoji._markCheck} {((TimeDictionaryKeys) i).ToString()}") { CallbackData = $"{i}" } );
                 }
                 else
                 {
@@ -140,7 +140,7 @@ namespace SeparatorIntoGroup
             {
                 if (isSelected[(TimeDictionaryKeys)i] == true)
                 {
-                    keyboard[1].Add(new InlineKeyboardButton($"+ {((TimeDictionaryKeys)i).ToString()}") { CallbackData = $"{i}" });
+                    keyboard[1].Add(new InlineKeyboardButton($"{Emoji._markCheck} {((TimeDictionaryKeys)i).ToString()}") { CallbackData = $"{i}" });
                 }
                 else
                 {
@@ -149,13 +149,13 @@ namespace SeparatorIntoGroup
             }
             if (isSelected[(TimeDictionaryKeys)6] == true)
             {
-                keyboard[2].Add(new InlineKeyboardButton($"+ {((TimeDictionaryKeys)6).ToString()}") { CallbackData = $"{6}" });
+                keyboard[2].Add(new InlineKeyboardButton($"{Emoji._markCheck} {((TimeDictionaryKeys)6).ToString()}") { CallbackData = $"{6}" });
             }
             else
             {
                 keyboard[2].Add(new InlineKeyboardButton($"{((TimeDictionaryKeys)6).ToString()}") { CallbackData = $"{6}" });
             }
-            keyboard[2].Add( new InlineKeyboardButton("Готово") { CallbackData = "done" } );
+            keyboard[2].Add( new InlineKeyboardButton($"Готово {Emoji._markExclamation}") { CallbackData = "done" } );
             
             return new MessageModel()
             {
