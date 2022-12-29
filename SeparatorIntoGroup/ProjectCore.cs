@@ -7,8 +7,8 @@ public class ProjectCore
     public List<Teacher> Teachers { get; set; }
     public List<Student> Students { get; set; }
     public List<Group> Groups { get; set; }
-    public string Path { get; set; }
 
+    private string _path { get; set; }
     private static ProjectCore _projectCore;
 
     private ProjectCore()
@@ -16,8 +16,7 @@ public class ProjectCore
         Teachers = new List<Teacher>();
         Students = new List<Student>();
         Groups = new List<Group>();
-        Path = "../Storage.txt";
-        _projectCore.LoadAll();
+        _path = "../../../Storage.txt";
     }
 
     public static ProjectCore GetProjectCore()
@@ -32,7 +31,7 @@ public class ProjectCore
 
     public void SaveAll()
     {
-        using (StreamWriter sw = new StreamWriter(Path))
+        using (StreamWriter sw = new StreamWriter(_path))
         {
             string jsn = JsonSerializer.Serialize(Teachers);
             sw.WriteLine(jsn);
@@ -45,9 +44,9 @@ public class ProjectCore
 
     public void LoadAll()
     {
-        if (File.Exists(Path))
+        if (File.Exists(_path))
         {
-            using (StreamReader sr = new StreamReader(Path))
+            using (StreamReader sr = new StreamReader(_path))
             {
                 string jsn = sr.ReadLine();
                 Teachers = JsonSerializer.Deserialize<List<Teacher>>(jsn);
@@ -57,5 +56,10 @@ public class ProjectCore
                 Groups = JsonSerializer.Deserialize<List<Group>>(jsn);
             }
         }
+    }
+
+    public void SetPathForTests(string path)
+    {
+        _path = path;
     }
 }

@@ -4,20 +4,19 @@ namespace SeparatorIntoGroup;
 
 public class Teacher : AbstractPersons
 {
-    private ProjectCore _projectCore;
+    private ProjectCore _projectCore = ProjectCore.GetProjectCore();
 
-    public Teacher(int id, string name, string userName)
+    public Teacher(long id, string personName, string accountName)
     {
         Id = id;
-        PersonName = name;
-        AccountName = userName;
+        PersonName = personName;
+        AccountName = accountName;
         Status = StatusType.IsTeacher;
-        _projectCore = ProjectCore.GetProjectCore();
     }
 
-    public void CreateNewStudent(int id, string name, string userName)
+    public void CreateNewStudent(long id, string name, string userName)
     {
-        Student student = new Student(id, name, userName);
+        Student student = new Student(id, name, "@"+userName);
         _projectCore.Students.Add(student);
         _projectCore.SaveAll();
     }
@@ -27,8 +26,7 @@ public class Teacher : AbstractPersons
         _projectCore.SaveAll();
     }
 
-
-    public void CreateNewGroup(int id, string name)
+    public void CreateNewGroup(long id, string name)
     {
         Group group = new Group(id, name);
         _projectCore.Groups.Add(group);
@@ -36,25 +34,25 @@ public class Teacher : AbstractPersons
     }
     public void AddStudentToGroup(Group group, Student student)
     {
-        group.AddStudentToGroup(student);
+        group.AddStudent(student);
         _projectCore.SaveAll();
     }
     public void RemoveStudentFromGroup(Group group, Student student)
     {
-        group.RemoveStudentFromGroup(student);
+        group.RemoveStudent(student);
         _projectCore.SaveAll();
     }
     public void DeleteGroup(Group group)
     {
-        group.ClearGroup();
+        group.DeleteGroup();
         _projectCore.Groups.Remove(group);
         _projectCore.SaveAll();
     }
 
 
-    public void CreateNewTeamInGroup(Group group, int id, string teamName)
+    public void CreateNewTeam(Group group, int id, string name)
     {
-        group.CreateNewTeamInGroup(id,teamName);
+        group.CreateNewTeam(id,name);
         _projectCore.SaveAll();
     }
     public void AddStudentToTeam(Group group, Team team, Student student)
@@ -71,5 +69,14 @@ public class Teacher : AbstractPersons
     {
         group.DeleteTeamFromGroup(team);
         _projectCore.SaveAll();
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Teacher teacher &&
+               Id == teacher.Id &&
+               PersonName == teacher.PersonName &&
+               AccountName == teacher.AccountName &&
+               Status == teacher.Status;
     }
 }
