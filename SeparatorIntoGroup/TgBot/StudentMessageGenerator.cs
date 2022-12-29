@@ -18,14 +18,14 @@ namespace SeparatorIntoGroup
             {
                 return new MessageModel()
                 {
-                    Text = "Здравствуйте студент",
+                    Text = $"Здравствуйте студент {Emoji._markHand}",
                     Keyboard = new InlineKeyboardMarkup(
                         new[]
                         {
                             new[]
                             {
                                 new InlineKeyboardButton("Статус") { CallbackData = "status" },
-                                new InlineKeyboardButton("Войти в группу") { CallbackData = "joinGroup" }
+                                new InlineKeyboardButton($"{Emoji._markRightwardsArrow} Войти в группу") { CallbackData = "joinGroup" }
                             },
                         }),
                     IsNeedToBeEdited = false
@@ -46,11 +46,11 @@ namespace SeparatorIntoGroup
                             new[]
                             {
                                 new InlineKeyboardButton("Статус") { CallbackData = "status" },
-                                new InlineKeyboardButton("Пройти опрос") { CallbackData = "takeASurvey" },
+                                new InlineKeyboardButton($"{Emoji._markRightwardsArrow} Пройти опрос") { CallbackData = "takeASurvey" },
                             },
                             new[]
                             {
-                            new InlineKeyboardButton("Посмотреть участников группы") { CallbackData = "groupMembers" } 
+                            new InlineKeyboardButton($"{Emoji._markQuestion} Посмотреть участников группы") { CallbackData = "groupMembers" } 
                             }
                         }),
                     IsNeedToBeEdited = false
@@ -129,7 +129,7 @@ namespace SeparatorIntoGroup
             {
                 if (isSelected[(TimeDictionaryKeys)i] == true)
                 {
-                    keyboard[0].Add( new InlineKeyboardButton($"{Emoji._markCheck} {((TimeDictionaryKeys) i).ToString()}") { CallbackData = $"{i}" } );
+                    keyboard[0].Add( new InlineKeyboardButton($"{Emoji._markStar} {((TimeDictionaryKeys) i).ToString()}") { CallbackData = $"{i}" } );
                 }
                 else
                 {
@@ -140,7 +140,7 @@ namespace SeparatorIntoGroup
             {
                 if (isSelected[(TimeDictionaryKeys)i] == true)
                 {
-                    keyboard[1].Add(new InlineKeyboardButton($"{Emoji._markCheck} {((TimeDictionaryKeys)i).ToString()}") { CallbackData = $"{i}" });
+                    keyboard[1].Add(new InlineKeyboardButton($"{Emoji._markStar} {((TimeDictionaryKeys)i).ToString()}") { CallbackData = $"{i}" });
                 }
                 else
                 {
@@ -149,13 +149,13 @@ namespace SeparatorIntoGroup
             }
             if (isSelected[(TimeDictionaryKeys)6] == true)
             {
-                keyboard[2].Add(new InlineKeyboardButton($"{Emoji._markCheck} {((TimeDictionaryKeys)6).ToString()}") { CallbackData = $"{6}" });
+                keyboard[2].Add(new InlineKeyboardButton($"{Emoji._markStar} {((TimeDictionaryKeys)6).ToString()}") { CallbackData = $"{6}" });
             }
             else
             {
                 keyboard[2].Add(new InlineKeyboardButton($"{((TimeDictionaryKeys)6).ToString()}") { CallbackData = $"{6}" });
             }
-            keyboard[2].Add( new InlineKeyboardButton($"Готово {Emoji._markExclamation}") { CallbackData = "done" } );
+            keyboard[2].Add( new InlineKeyboardButton($"{Emoji._markCheck} Готово") { CallbackData = "done" } );
             
             return new MessageModel()
             {
@@ -205,7 +205,7 @@ namespace SeparatorIntoGroup
             };
             if (isSelected[(TimeDictionaryValues)0] == true)
             {
-                keyboard[0].Add(new InlineKeyboardButton($"+ 6:00 - 9:00") { CallbackData = $"{0}" });
+                keyboard[0].Add(new InlineKeyboardButton($"{Emoji._markStar} 6:00 - 9:00") { CallbackData = $"{0}" });
             }
             else
             {
@@ -213,7 +213,7 @@ namespace SeparatorIntoGroup
             }
             if (isSelected[(TimeDictionaryValues)1] == true)
             {
-                keyboard[0].Add(new InlineKeyboardButton($"+ 9:00-12:00") { CallbackData = $"{1}" });
+                keyboard[0].Add(new InlineKeyboardButton($"{Emoji._markStar} 9:00-12:00") { CallbackData = $"{1}" });
             }
             else
             {
@@ -221,7 +221,7 @@ namespace SeparatorIntoGroup
             }
             if (isSelected[(TimeDictionaryValues)2] == true)
             {
-                keyboard[0].Add(new InlineKeyboardButton($"+ 12:00-15:00") { CallbackData = $"{2}" });
+                keyboard[0].Add(new InlineKeyboardButton($"{Emoji._markStar} 12:00-15:00") { CallbackData = $"{2}" });
             }
             else
             {
@@ -230,7 +230,7 @@ namespace SeparatorIntoGroup
 
             if (isSelected[(TimeDictionaryValues)3] == true)
             {
-                keyboard[1].Add(new InlineKeyboardButton($"+ 15:00-18:00") { CallbackData = $"{3}" });
+                keyboard[1].Add(new InlineKeyboardButton($"{Emoji._markStar} 15:00-18:00") { CallbackData = $"{3}" });
             }
             else
             {
@@ -238,7 +238,7 @@ namespace SeparatorIntoGroup
             }
             if (isSelected[(TimeDictionaryValues)4] == true)
             {
-                keyboard[1].Add(new InlineKeyboardButton($"+ 18:00-21:00") { CallbackData = $"{4}" });
+                keyboard[1].Add(new InlineKeyboardButton($"{Emoji._markStar} 18:00-21:00") { CallbackData = $"{4}" });
             }
             else
             {
@@ -246,14 +246,14 @@ namespace SeparatorIntoGroup
             }
             if (isSelected[(TimeDictionaryValues)5] == true)
             {
-                keyboard[1].Add(new InlineKeyboardButton($"+ 21:00-24:00") { CallbackData = $"{5}" });
+                keyboard[1].Add(new InlineKeyboardButton($"{Emoji._markStar} 21:00-24:00") { CallbackData = $"{5}" });
             }
             else
             {
                 keyboard[1].Add(new InlineKeyboardButton($"21:00-24:00") { CallbackData = $"{5}" });
             }
 
-            keyboard[2].Add(new InlineKeyboardButton("Готово") { CallbackData = "done" });
+            keyboard[2].Add(new InlineKeyboardButton($"{Emoji._markCheck} Готово") { CallbackData = "done" });
 
             return new MessageModel()
             {
