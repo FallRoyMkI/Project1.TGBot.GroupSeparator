@@ -1,5 +1,6 @@
 ﻿using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
+using SeparatorIntoGroup.Options;
 
 namespace SeparatorIntoGroup
 {
@@ -11,17 +12,17 @@ namespace SeparatorIntoGroup
             {
                 return new MessageModel()
                 {
-                    Text = "Ку зябл",
+                    Text = $"Ку зябл {Emoji._markHand}",
                     Keyboard = new InlineKeyboardMarkup(
                         new[]
                         {
                             new[]
                             {
-                                new InlineKeyboardButton("Создать группу") { CallbackData = "createGroup" }
+                                new InlineKeyboardButton($"{Emoji._plusSign} Создать группу") { CallbackData = "createGroup" }
                             },
                             new[]
                             {
-                                new InlineKeyboardButton("Посмотреть список групп") { CallbackData = "groupList" }
+                                new InlineKeyboardButton($"{Emoji._markQuestion} Посмотреть список групп") { CallbackData = "groupList" }
                             },
                             new[]
                             {
@@ -98,16 +99,16 @@ namespace SeparatorIntoGroup
                         {
                             new[]
                             {
-                                new InlineKeyboardButton("Список студентов") { CallbackData = "studentList" },
-                                new InlineKeyboardButton("Выгнать студента") { CallbackData = "deleteStudent" }
+                                new InlineKeyboardButton($"{Emoji._markQuestion} Список студентов") { CallbackData = "studentList" },
+                                new InlineKeyboardButton($"{Emoji._minusSign} Выгнать студента") { CallbackData = "deleteStudent" }
                             },
                             new[]
                             {
-                                new InlineKeyboardButton("Распределить студентов на команды") { CallbackData = "createTeams" }
+                                new InlineKeyboardButton($"{Emoji._markrecycling} Распределить студентов на команды") { CallbackData = "createTeams" }
                             },
                             new[]
                             {
-                                new InlineKeyboardButton("УДАЛИТЬ ГРУППУ") { CallbackData = "deleteGroup" }
+                                new InlineKeyboardButton($"{Emoji._minusSign} УДАЛИТЬ ГРУППУ") { CallbackData = "deleteGroup" }
                             }
                         })
                 };
@@ -137,7 +138,7 @@ namespace SeparatorIntoGroup
             {
                 return new MessageModel()
                 {
-                    Text = "Введите Id или @username студента, которого хотите отчислить с данной группы (Если вы передумали введите \"НАЗАД\"" ,
+                    Text = $"{Emoji._minusSign} Введите Id или @username студента, которого хотите отчислить с данной группы (Если вы передумали введите \"НАЗАД\"" ,
                     Keyboard = null
                 };
             }
@@ -148,7 +149,7 @@ namespace SeparatorIntoGroup
             {
                 return new MessageModel()
                 {
-                    Text = "Студент с введенными параметрами не состоит в текущей группе",
+                    Text = $"{Emoji._warningSign} Студент с введенными параметрами не состоит в текущей группе",
                     Keyboard = null
                 };
             }
@@ -159,7 +160,7 @@ namespace SeparatorIntoGroup
             {
                 return new MessageModel()
                 {
-                    Text = "Подтверждение не получено",
+                    Text = $"{Emoji._markExclamation} Подтверждение не получено",
                     Keyboard = null
                 };
             }
@@ -170,22 +171,22 @@ namespace SeparatorIntoGroup
             {
                 return new MessageModel()
                 {
-                    Text = "Вы успешно удалили студента, каковы Ваши дальнейшие действия:",
+                    Text = $"{Emoji._markCheck} Вы успешно удалили студента, каковы Ваши дальнейшие действия:",
                     Keyboard = new InlineKeyboardMarkup(
                         new[]
                         {
                             new[]
                             {
                                 new InlineKeyboardButton("Список студентов") { CallbackData = "studentList" },
-                                new InlineKeyboardButton("Выгнать студента") { CallbackData = "deleteStudent" }
+                                new InlineKeyboardButton($"{Emoji._minusSign} Выгнать студента") { CallbackData = "deleteStudent" }
                             },
                             new[]
                             {
-                                new InlineKeyboardButton("Распределить студентов на команды") { CallbackData = "createTeams" }
+                                new InlineKeyboardButton($"{Emoji._markrecycling} Распределить студентов на команды") { CallbackData = "createTeams" }
                             },
                             new[]
                             {
-                                new InlineKeyboardButton("УДАЛИТЬ ГРУППУ") { CallbackData = "deleteGroup" }
+                                new InlineKeyboardButton($"{Emoji._minusSign} УДАЛИТЬ ГРУППУ") { CallbackData = "deleteGroup" }
                             }
                         })
                 };
@@ -197,13 +198,13 @@ namespace SeparatorIntoGroup
             {
                 return new MessageModel()
                 {
-                    Text = "Вы успешно удалили группу, каковы Ваши дальнейшие действия:",
+                    Text = $"{Emoji._markCheck} Вы успешно удалили группу, каковы Ваши дальнейшие действия:",
                     Keyboard = new InlineKeyboardMarkup(
                         new[]
                         {
                             new[]
                             {
-                                new InlineKeyboardButton("Создать группу") { CallbackData = "createGroup" }
+                                new InlineKeyboardButton($"{Emoji._plusSign} Создать группу") { CallbackData = "createGroup" }
                             },
                             new[]
                             {
